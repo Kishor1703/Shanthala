@@ -1,0 +1,47 @@
+import mandala from './assets/mandala.jpg'
+import hero from './assets/hero.jpg'
+import guruPortrait from './assets/guru-portrait.jpg'
+import groupStage from './assets/group-stage.jpg'
+import stageRed from './assets/stage-red.jpg'
+import duoStage from './assets/duo-stage.jpg'
+import logo from './assets/logo.png'
+import soloRed from './assets/extract_1.jpg'
+import sunsetDance from './assets/extract_2.jpg'
+import blueCurtain from './assets/extract_3.jpg'
+import redBlack from './assets/extract_4.jpg'
+import smileRed from './assets/extract_5.jpg'
+import lampPose from './assets/extract_7.jpg'
+import groupStack from './assets/extract_8.jpg'
+import multiArms from './assets/extract_9.jpg'
+import hnStage from './assets/extract_10.jpg'
+import classRegular from './assets/extract_12.png'
+import classLadies from './assets/extract_14.png'
+import valueDiscipline from './assets/extract_15.png'
+import valueDedication from './assets/extract_17.png'
+import design from './assets/design.png'
+import online from './assets/online.png'
+
+export const siteAssets = {
+  mandala,
+  hero,
+  guruPortrait,
+  groupStage,
+  stageRed,
+  duoStage,
+  logo,
+  soloRed,
+  sunsetDance,
+  blueCurtain,
+  redBlack,
+  smileRed,
+  lampPose,
+  groupStack,
+  multiArms,
+  hnStage,
+  classRegular,
+  classLadies,
+  valueDiscipline,
+  valueDedication,
+  design,
+  online,
+}
