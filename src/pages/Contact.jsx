@@ -14,12 +14,24 @@ export default function Contact() {
       </div>
 
       <section className="contact-section contact-page-section" style={{ paddingTop: '6rem' }}>
-        <svg className="mandala-bg" style={{ left: '-5%', bottom: '-10%', width: '400px' }} viewBox="0 0 500 500">
-          <circle cx="250" cy="250" r="240" stroke="#C9973A" strokeWidth="1" />
-          {[...Array(12)].map((_, i) => (
-            <line key={i} x1="250" y1="10" x2="250" y2="490" stroke="#C9973A" strokeWidth="0.5" transform={`rotate(${i * 30} 250 250)`} />
-          ))}
-        </svg>
+        <img
+          className="mandala-bg mandala-contact-left"
+          src={siteAssets.heroLeft}
+          alt=""
+          aria-hidden="true"
+        />
+        <img
+          className="mandala-bg mandala-contact-right"
+          src={siteAssets.heroRight}
+          alt=""
+          aria-hidden="true"
+        />
+        <img
+          className="mandala-bg mandala-contact-top"
+          src={siteAssets.heroTop}
+          alt=""
+          aria-hidden="true"
+        />
         <div className="container">
           <div className="contact-card reveal">
             <h2>Contact Us</h2>

@@ -29,6 +29,24 @@ export default function Gallery() {
       </div>
 
       <section className="gallery-page">
+        <img
+          className="mandala-bg mandala-gallery-left"
+          src={siteAssets.heroLeft}
+          alt=""
+          aria-hidden="true"
+        />
+        <img
+          className="mandala-bg mandala-gallery-right"
+          src={siteAssets.heroRight}
+          alt=""
+          aria-hidden="true"
+        />
+        <img
+          className="mandala-bg mandala-gallery-top"
+          src={siteAssets.heroTop}
+          alt=""
+          aria-hidden="true"
+        />
         <div className="container">
           <div className="divider reveal"><div className="divider-diamond"></div></div>
           <div className="gallery-masonry reveal">

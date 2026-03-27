@@ -80,30 +80,16 @@ export default function Home() {
 
   return (
     <div className="page-enter">
-      <section className="hero">
-        <svg className="hero-mandala" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="250" cy="250" r="240" stroke="#C9973A" strokeWidth="1" />
-          <circle cx="250" cy="250" r="200" stroke="#C9973A" strokeWidth="0.5" />
-          <circle cx="250" cy="250" r="160" stroke="#C9973A" strokeWidth="1" />
-          <circle cx="250" cy="250" r="120" stroke="#C9973A" strokeWidth="0.5" />
-          {[...Array(16)].map((_, i) => (
-            <line key={i} x1="250" y1="10" x2="250" y2="490" stroke="#C9973A" strokeWidth="0.4" transform={`rotate(${i * 22.5} 250 250)`} />
-          ))}
-          {[...Array(8)].map((_, i) => (
-            <ellipse key={i} cx="250" cy="130" rx="18" ry="40" stroke="#C9973A" strokeWidth="0.6" fill="none" transform={`rotate(${i * 45} 250 250)`} />
-          ))}
-        </svg>
+      <section className="hero" style={{ '--hero-image': `url(${siteAssets.heroFigure})` }}>
+        <img className="hero-ornament hero-ornament-top" src={siteAssets.heroTop} alt="" aria-hidden="true" />
+        <img className="hero-ornament hero-ornament-left" src={siteAssets.heroLeft} alt="" aria-hidden="true" />
+        <img className="hero-ornament hero-ornament-right" src={siteAssets.heroRight} alt="" aria-hidden="true" />
         <div className="hero-content">
           <div className="hero-line"></div>
-          <h1 className="hero-title">Welcome To Our<br />Dance School</h1>
+          <h1 className="hero-title">WELCOME TO OUR<br />DANCE SCHOOL</h1>
           <p className="hero-subtitle">Embracing the rich heritage of Bharatanatyam</p>
           <p className="hero-desc">Experience the divine art of classical Indian dance, where tradition meets grace, and every movement tells a story</p>
         </div>
-        <img
-          className="hero-image"
-          src={siteAssets.hero}
-          alt="Bharatanatyam dancer"
-        />
       </section>
 
       <section className="about-strip">
@@ -229,12 +215,6 @@ export default function Home() {
       </section>
 
       <section className="contact-section">
-        <svg className="mandala-bg" style={{ left: '-5%', bottom: '-10%', width: '400px' }} viewBox="0 0 500 500">
-          <circle cx="250" cy="250" r="240" stroke="#C9973A" strokeWidth="1" />
-          {[...Array(12)].map((_, i) => (
-            <line key={i} x1="250" y1="10" x2="250" y2="490" stroke="#C9973A" strokeWidth="0.5" transform={`rotate(${i * 30} 250 250)`} />
-          ))}
-        </svg>
         <div className="container">
           <div className="contact-card reveal">
             <h2>Contact Us</h2>

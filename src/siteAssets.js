@@ -1,5 +1,9 @@
 import mandala from './assets/mandala.jpg'
-import hero from './assets/hero.jpg'
+import hero from './assets/hero.png'
+import heroLeft from './assets/1.png'
+import heroRight from './assets/2.png'
+import heroTop from './assets/3.png'
+import heroFigure from './assets/4.png'
 import guruPortrait from './assets/guru-portrait.jpg'
 import groupStage from './assets/group-stage.jpg'
 import stageRed from './assets/stage-red.jpg'
@@ -24,6 +28,10 @@ import online from './assets/online.png'
 export const siteAssets = {
   mandala,
   hero,
+  heroLeft,
+  heroRight,
+  heroTop,
+  heroFigure,
   guruPortrait,
   groupStage,
   stageRed,
