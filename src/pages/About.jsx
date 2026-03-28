@@ -10,27 +10,19 @@ const testimonials = [
 
 function ValueIcon({ type }) {
   if (type === 'discipline') {
-    return <img src={siteAssets.valueDiscipline} alt="" aria-hidden="true" />
+    return <img src={siteAssets.disciplineIcon} alt="" aria-hidden="true" />
   }
 
   if (type === 'dedication') {
-    return <img src={siteAssets.valueDedication} alt="" aria-hidden="true" />
+    return <img src={siteAssets.valueDiscipline} alt="" aria-hidden="true" />
   }
 
   if (type === 'spirituality') {
-    return (
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <path d="M32 10c4 5 6 9 6 13a6 6 0 1 1-12 0c0-4 2-8 6-13Z" fill="none" stroke="currentColor" strokeWidth="2.5" />
-        <path d="M16 38c5-2 9-6 11-12 2 6 6 10 11 12 4 2 8 3 13 3-7 5-13 7-19 7s-12-2-19-7c5 0 9-1 14-3Z" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
-        <path d="M24 50h16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-      </svg>
-    )
+     return<img src={siteAssets.spi} alt="" aria-hidden="true" />
   }
 
   return (
-    <svg viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M32 14c3 7 7 10 14 10-5 3-8 7-9 13-3-5-6-8-10-10-3 3-5 7-6 12-2-6-5-10-10-13 7 0 11-3 14-12 2 4 4 7 7 10Z" fill="currentColor" />
-    </svg>
+    <img src={siteAssets.grow} alt="" aria-hidden="true" />
   )
 }
 
@@ -52,7 +44,7 @@ export default function About() {
           <div className="about-intro-text">
             <div className="reveal">
               <span className="section-tag">Who We Are</span>
-              <h2 className="section-title" style={{ fontStyle: 'italic' }}>Shanthala Nritya Angala</h2>
+              <h2 className="section-title" style={{ fontStyle: 'var(--font-body)' }}>Shanthala Nritya Angala</h2>
             </div>
             <p className="reveal" style={{ transitionDelay: '0.15s' }}>
               Shanthala Nritya Angala is a dedicated space for learning Bharatanatyam, rooted in tradition and guided by discipline, grace, and cultural values. Established with a passion for classical dance, the school provides a nurturing environment for students of all ages to explore and grow in their artistic journey.
@@ -68,7 +60,7 @@ export default function About() {
       <section className="journey-section">
         <div className="container">
           <div className="journey-grid">
-            <div className="reveal-left">
+            <div className="reveal-left unique-copy">
               <img src={siteAssets.guruPortrait} alt="Journey" />
             </div>
             <div className="journey-text reveal-right">
@@ -110,10 +102,11 @@ export default function About() {
 
       <section className="unique-section">
         <div className="container">
+          <div className="unique-header reveal">
+            <h2 className="section-title">What Makes Us Unique</h2>
+          </div>
           <div className="unique-grid">
-            <div className="reveal-left">
-              <span className="section-tag">Our Difference</span>
-              <h2 className="section-title" style={{ marginBottom: '2rem' }}>What Makes Us Unique</h2>
+            <div className="reveal-left unique-copy">
               <ul className="unique-list">
                 {[
                   { icon: 'calendar', title: 'Flexible Batches', desc: 'Classes available throughout the week to suit different schedules.' },

@@ -24,8 +24,14 @@ import valueDiscipline from './assets/extract_15.png'
 import valueDedication from './assets/extract_17.png'
 import design from './assets/design.png'
 import online from './assets/online.png'
+import disciplineIcon from './assets/discipline.png'
+import spi from './assets/spi.png'
+import grow from './assets/growth.png'
 
 export const siteAssets = {
+  grow,
+  spi,
+  disciplineIcon,
   mandala,
   hero,
   heroLeft,

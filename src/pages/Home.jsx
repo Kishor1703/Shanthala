@@ -97,7 +97,7 @@ export default function Home() {
           <div className="divider"><div className="divider-diamond"></div></div>
           <div className="reveal">
             <span className="section-tag">Our Art</span>
-            <h2 className="section-title" style={{ textAlign: 'center', fontStyle: 'italic' }}>The Art of Bharatanatyam</h2>
+            <h2 className="section-title" style={{ textAlign: 'center', fontStyle: 'var(--font-body)' }}>The Art of Bharatanatyam</h2>
           </div>
           <p className="reveal" style={{ transitionDelay: '0.15s' }}>
             At Shanthala Nritya Angala, we are dedicated to preserving and promoting the ancient classical dance form of Bharatanatyam. Our school nurtures students in the authentic tradition, emphasizing technique, expression, and spiritual connection.
@@ -155,11 +155,13 @@ export default function Home() {
           <div className="classes-header reveal">
             <span className="section-tag">What We Offer</span>
             <h2 className="section-title">Classes Offered</h2>
-            <p>Our classes focus on building strong fundamentals in Bharatanatyam, nurturing grace, discipline, and expression in every student</p>
+            <p >
+              Our classes focus on building strong fundamentals in Bharatanatyam, nurturing grace, discipline, and expression in every student
+            </p>
           </div>
           <div className="classes-grid">
             {[
-              { icon: 'regular', title: 'Regular Classes', desc: 'Structured Bharatanatyam training for students aged 5 and above' },
+              { icon: 'regular', title: 'Regular Classes', desc: <>Structured training for<br />students aged 5 and above</> },
               { icon: 'ladies', title: 'Ladies Batch', desc: 'Special batch for women restarting their dance journey' },
               { icon: 'online', title: 'Online Classes', desc: 'Learn from anywhere with guided online sessions' },
             ].map((c, i) => (
