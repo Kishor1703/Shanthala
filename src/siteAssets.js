@@ -27,8 +27,10 @@ import online from './assets/online.png'
 import disciplineIcon from './assets/discipline.png'
 import spi from './assets/spi.png'
 import grow from './assets/growth.png'
+import crown from './assets/game-icons_crown.png'
 
 export const siteAssets = {
+  crown,
   grow,
   spi,
   disciplineIcon,

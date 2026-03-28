@@ -21,12 +21,12 @@ export default function Gallery() {
 
   return (
     <div className="page-enter">
-      <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.groupStage})` }}>
+      {/* <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.groupStage})` }}>
         <div>
           <h1>Gallery</h1>
           <p>A visual celebration of movement, grace, and the timeless beauty of Bharatanatyam.</p>
         </div>
-      </div>
+      </div> */}
 
       <section className="gallery-page">
         <img

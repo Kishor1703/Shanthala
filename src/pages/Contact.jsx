@@ -6,12 +6,12 @@ export default function Contact() {
 
   return (
     <div className="page-enter">
-      <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.lampPose})` }}>
+      {/* <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.lampPose})` }}>
         <div>
           <h1>Contact Us</h1>
           <p>We would love to hear from you and help begin your Bharatanatyam journey.</p>
         </div>
-      </div>
+      </div> */}
 
       <section className="contact-section contact-page-section" style={{ paddingTop: '6rem' }}>
         <img
@@ -46,7 +46,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="contact-info-grid">
+          {/* <div className="contact-info-grid">
             {[
               { icon: 'EM', label: 'Email', value: 'info@shanthaladance.in' },
               { icon: 'PH', label: 'Phone', value: '+91 99867 30111' },
@@ -58,7 +58,7 @@ export default function Contact() {
                 <p>{item.value}</p>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

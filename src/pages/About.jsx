@@ -124,21 +124,12 @@ export default function About() {
                           <path d="M47 34v6l4 2" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
                         </svg>
                       )}
-                      {item.icon === 'ladies' && <img src={siteAssets.classLadies} alt="" aria-hidden="true" />}
+                      {item.icon === 'ladies' && <img src={siteAssets.valueDedication} alt="" aria-hidden="true" />}
                       {item.icon === 'online' && (
-                        <svg viewBox="0 0 64 64" aria-hidden="true">
-                          <rect x="12" y="14" width="32" height="22" rx="2" fill="none" stroke="currentColor" strokeWidth="2.8" />
-                          <path d="M8 44h40M20 44v5h12v-5" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
-                        </svg>
+                        <img src={siteAssets.online} alt="" aria-hidden="true" />
                       )}
                       {item.icon === 'arangetram' && (
-                        <svg viewBox="0 0 64 64" aria-hidden="true">
-                          <path d="M14 38c5-8 12-13 18-13s13 5 18 13c-6 4-12 6-18 6s-12-2-18-6Z" fill="currentColor" />
-                          <path d="M19 30 15 20M27 26l1-10M37 26l7-8M45 31l5-11" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                          <circle cx="22" cy="39" r="2" fill="#fff" />
-                          <circle cx="32" cy="41" r="2" fill="#fff" />
-                          <circle cx="42" cy="39" r="2" fill="#fff" />
-                        </svg>
+                       <img src={siteAssets.crown} alt="" aria-hidden="true" />
                       )}
                     </div>
                     <div>
@@ -160,7 +151,7 @@ export default function About() {
         <div className="container">
           <div className="testimonials-header reveal">
             <span className="section-tag">Student Stories</span>
-            <h2 className="section-title" style={{ fontStyle: 'italic' }}>Testimonials</h2>
+            <h2 className="section-title" style={{ fontStyle: 'var(--font-body)' }}>Testimonials</h2>
             <p>See what our students and parents are saying.</p>
           </div>
           <div className="testimonials-grid">
