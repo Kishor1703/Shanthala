@@ -53,7 +53,7 @@ export default function About() {
               With a focus on strong fundamentals, expression, and spiritual connection, Shanthala Nritya Angala encourages every student to learn with sincerity, confidence, and devotion to the art form.
             </p>
           </div>
-          <div className="divider reveal"><div className="divider-diamond"></div></div>
+          {/* <div className="divider reveal"><div className="divider-diamond"></div></div> */}
         </div>
       </section>
 
@@ -150,7 +150,7 @@ export default function About() {
       <section className="testimonials-section">
         <div className="container">
           <div className="testimonials-header reveal">
-            <span className="section-tag">Student Stories</span>
+            {/* <span className="section-tag">Student Stories</span> */}
             <h2 className="section-title" style={{ fontStyle: 'var(--font-body)' }}>Testimonials</h2>
             <p>See what our students and parents are saying.</p>
           </div>
