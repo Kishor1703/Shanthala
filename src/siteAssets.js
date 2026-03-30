@@ -30,8 +30,10 @@ import grow from './assets/growth.png'
 import crown from './assets/game-icons_crown.png'
 import RB from './assets/5.png'
 import LS from './assets/6.png'
+import vec from './assets/Vector.png'
 
 export const siteAssets = {
+  vec,
   LS,
   RB,
   crown,

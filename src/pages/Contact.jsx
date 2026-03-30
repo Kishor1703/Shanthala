@@ -51,13 +51,13 @@ export default function Contact() {
           <div className="contact-info-grid">
             {[
               { icon: 'EM', label: 'Email', value: 'info@shanthaladance.in' },
-              { icon: 'PH', label: 'Phone', value: '+91 99867 30111' },
+              { icon: 'PH', label: 'Phone', value: '+91 99867 30111', valueClassName: 'phone-number-text' },
               { icon: 'AD', label: 'Address', value: '25, 8th Main Rd, 10th Cross, 2nd Block, Jayanagar, Bengaluru 560011' },
             ].map((item, i) => (
               <div key={i} className="contact-info-card reveal" style={{ transitionDelay: `${i * 0.1}s` }}>
                 <div className="contact-info-icon">{item.icon}</div>
                 <h4>{item.label}</h4>
-                <p>{item.value}</p>
+                <p className={item.valueClassName}>{item.value}</p>
               </div>
             ))}
           </div>

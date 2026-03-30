@@ -7,7 +7,6 @@
   background: var(--crimson-dark);        /* deep dark crimson #6B1020 */
   padding: 4rem 0 3rem;
   position: relative;
-  font-family: (var(--font-body));
 }
 
 /* ── header ── */
@@ -41,10 +40,9 @@
 .classes-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.2rem;
-  max-width: 1100px;
+  gap: 4.5rem;
+  max-width: px;
   margin: 0 auto;
-  gap: 4rem;
 }
 
 /* ── individual card ── */
@@ -52,7 +50,8 @@
   background: var(--white);
   border: 1px solid rgba(201, 151, 58, 0.35);
   border-radius: 4px;
-  padding: 1rem 1rem 1.6rem;
+  padding: 0.9rem 1.8rem 1.6rem;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -158,10 +157,10 @@
   font-family: var(--font-body);
   font-size: 0.82rem;
   letter-spacing: 0.04em;
-  padding: 0.75rem 3rem;
+  padding: 0.7rem 3rem;
   border-radius: 2px;
   border: none;
-  width: 250px;
+  max-width: 300px;
   transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -213,4 +212,10 @@
   .class-card {
     min-height: 260px;
   }
+}
+
+.class-vector {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }

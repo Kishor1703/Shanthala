@@ -175,7 +175,7 @@ export default function Home() {
                 <p>{c.desc}</p>
                 <div className="class-card-divider">
                   <span></span>
-                  <i></i>
+                  <img src={siteAssets.vec} alt="" className='class-vector'/>
                   <span></span>
                 </div>
               </div>

@@ -54,7 +54,7 @@ export default function Footer() {
           <div className="footer-col">
             <h4>Contact Info</h4>
             <p className="footer-contact-item">info@shanthaladance.in</p>
-            <p className="footer-contact-item">+91 99867 30111</p>
+            <p className="footer-contact-item phone-number-text">+91 99867 30111</p>
             <p className="footer-contact-item">25, 8th Main Rd, 10th Cross,<br />2nd Block, Jayanagar,<br />Bengaluru, Karnataka 560011</p>
             <p className="footer-contact-item">Mon-Fri: 9AM - 8PM</p>
           </div>
