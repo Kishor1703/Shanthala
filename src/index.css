@@ -493,7 +493,7 @@ ul { list-style: none; }
 
 /* ===== CONTACT SECTION ===== */
 .contact-section {
-  padding: 3rem 0;
+  padding: 1rem 0;
   background: #fbf1e4;
   position: relative;
   overflow: hidden;
@@ -1044,6 +1044,7 @@ ul { list-style: none; }
   position: relative;
   background: linear-gradient(180deg, #f7ecde 0%, #fbf1e4 100%);
   overflow: hidden;
+  padding-top: 6rem;
 }
 .contact-info-grid {
   display: grid;
@@ -1218,7 +1219,7 @@ ul { list-style: none; }
 .cp-heading {
   font-family: var(--font-display);
   font-size: clamp(2rem, 3.2vw, 2.8rem);
-  font-weight: 700;
+  font-weight: 400;
   color: var(--crimson);
   text-transform: uppercase;
   letter-spacing: 0.03em;

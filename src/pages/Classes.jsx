@@ -92,7 +92,7 @@ export default function Classes() {
           </div>
 
           {/* Arangetram — full width */}
-          <article className="cp-arangetram reveal">
+           <article className="cp-arangetram reveal">
             <div className="cp-arangetram-img-wrap">
               <img
                 src={siteAssets.hero}

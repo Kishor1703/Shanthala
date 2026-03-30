@@ -31,7 +31,7 @@ export default function About() {
 
   return (
     <div className="page-enter">
-      <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.multiArms})` }}>
+      <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.groupStage})` }}>
         <div>
           <h1>About Us</h1>
           <p>A sanctuary where tradition meets grace, and every dancer embarks on a journey of artistic excellence and spiritual growth through the timeless art of Bharatanatyam.</p>
@@ -117,12 +117,7 @@ export default function About() {
                   <li className="unique-item" key={i}>
                     <div className="unique-item-icon">
                       {item.icon === 'calendar' && (
-                        <svg viewBox="0 0 64 64" aria-hidden="true">
-                          <rect x="10" y="14" width="30" height="26" rx="2" fill="none" stroke="currentColor" strokeWidth="2.5" />
-                          <path d="M10 22h30M18 10v8M32 10v8M16 28h6M25 28h6M16 35h6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                          <circle cx="47" cy="39" r="9" fill="none" stroke="currentColor" strokeWidth="2.5" />
-                          <path d="M47 34v6l4 2" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                        </svg>
+                        <img src={siteAssets.date} alt="" aria-hidden="true" />
                       )}
                       {item.icon === 'ladies' && <img src={siteAssets.valueDedication} alt="" aria-hidden="true" />}
                       {item.icon === 'online' && (

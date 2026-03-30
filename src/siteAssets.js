@@ -8,7 +8,7 @@ import guruPortrait from './assets/guru-portrait.jpg'
 import groupStage from './assets/group-stage.jpg'
 import stageRed from './assets/stage-red.jpg'
 import duoStage from './assets/duo-stage.jpg'
-import logo from './assets/logo.png'
+import logo from '../public/logo.png'
 import soloRed from './assets/extract_1.jpg'
 import sunsetDance from './assets/extract_2.jpg'
 import blueCurtain from './assets/extract_3.jpg'
@@ -31,8 +31,10 @@ import crown from './assets/game-icons_crown.png'
 import RB from './assets/5.png'
 import LS from './assets/6.png'
 import vec from './assets/Vector.png'
+import date from './assets/date-time.png'
 
 export const siteAssets = {
+  date,
   vec,
   LS,
   RB,
