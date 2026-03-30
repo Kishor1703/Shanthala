@@ -1070,7 +1070,7 @@ ul { list-style: none; }
 .testimonials-cta { text-align: center; margin-top: 2.5rem; }
 
 /* ===== CLASSES PAGE ===== */
-.classes-page { padding: 5rem 0; background: var(--cream); }
+.classes-page { padding: 5rem 0; background: var(--white); }
 .class-detail-card {
   background: var(--white);
   margin-bottom: 3rem;
