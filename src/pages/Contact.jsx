@@ -39,8 +39,10 @@ export default function Contact() {
               <input className="form-input" type="text" placeholder="Name" />
               <input className="form-input" type="email" placeholder="Email" />
             </div>
-            <input className="form-input" type="tel" placeholder="Phone Number" style={{ width: '100%', marginBottom: '1rem' }} />
-            <textarea className="form-input" placeholder="Message"></textarea>
+            <div className="form-stack">
+              <input className="form-input form-input-phone" type="tel" placeholder="Phone Number" />
+              <textarea className="form-input form-input-message" placeholder="Message"></textarea>
+            </div>
             <div className="form-submit">
               <button className="btn-primary">Submit</button>
             </div>

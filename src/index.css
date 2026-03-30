@@ -88,7 +88,7 @@ ul { list-style: none; }
 
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1rem, 4vw, 2rem);
   font-weight: 600;
   color: var(--crimson);
   line-height: 1.2;
@@ -106,13 +106,13 @@ ul { list-style: none; }
   content: '';
   flex: 1;
   max-width: 80px;
-  height: 1px;
+  height: 2px;
   background: var(--gold);
 }
 .divider-diamond {
-  width: 8px;
-  height: 8px;
-  background: var(--gold);
+  width: 15px;
+  height: 15px;
+  background: var(--crimson);
   transform: rotate(45deg);
 }
 
@@ -140,19 +140,19 @@ ul { list-style: none; }
 .btn-outline {
   display: inline-block;
   border: 1.5px solid var(--crimson);
-  color: var(--crimson);
+  color: var(--white);
   font-family: var(--font-body);
   font-size: 0.78rem;
   letter-spacing: 0.02em;
   padding: 0.7rem 1.8rem;
   cursor: pointer;
   transition: all var(--transition);
-  background: transparent;
+  background: #8B1538;
   border-radius: 3px;
 }
 .btn-outline:hover {
   background: var(--crimson);
-  color: var(--white);
+  color: var(--gold);
 }
 
 /* ===== MANDALA BACKGROUND ===== */
@@ -299,11 +299,11 @@ ul { list-style: none; }
 /* ===== ABOUT SECTION (homepage) ===== */
 .about-strip {
   background: var(--cream);
-  padding: 6rem 0;
+  padding: 2rem 0;
   text-align: center;
 }
 .about-strip p {
-  max-width: 680px;
+  max-width: 850px;
   margin: 1rem auto 0;
   color: var(--text-mid);
   font-size: 0.95rem;
@@ -322,7 +322,7 @@ ul { list-style: none; }
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(111, 18, 15, 0.68);
+  background: #5A1919E3;
 }
 .about-band-image,
 .about-band-image img {
@@ -344,7 +344,7 @@ ul { list-style: none; }
 }
 .about-band-panel {
   text-align: center;
-  max-width: 620px;
+  max-width: 900px;
   color: var(--white);
 }
 .about-band-panel h2 {
@@ -369,7 +369,7 @@ ul { list-style: none; }
 
 /* ===== GURU SECTION ===== */
 .guru-section {
-  padding: 6rem 0;
+  padding: 2rem 0;
   background: var(--cream);
 }
 .guru-grid {
@@ -574,7 +574,7 @@ ul { list-style: none; }
 
 /* ===== GALLERY SECTION ===== */
 .gallery-section {
-  padding: 6rem 0;
+  padding: 2rem 0;
   background: var(--cream);
 }
 .gallery-header { text-align: center; margin-bottom: 3rem; }
@@ -611,45 +611,76 @@ ul { list-style: none; }
 
 /* ===== CONTACT SECTION ===== */
 .contact-section {
-  padding: 6rem 0;
-  background: var(--cream-dark);
+  padding: 3rem 0;
+  background: #fbf1e4;
   position: relative;
   overflow: hidden;
 }
 .contact-card {
   background: var(--white);
-  max-width: 860px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 3.5rem;
-  box-shadow: 0 20px 60px rgba(139,26,43,0.08);
+  padding: 3.8rem 5.6rem 3rem;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(44, 24, 16, 0.12);
 }
 .contact-card h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-size: clamp(2rem, 3vw, 2.6rem);
   color: var(--crimson);
-  margin-bottom: 2rem;
+  font-weight: 500;
+  margin-bottom: 1.7rem;
 }
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.6rem;
   margin-bottom: 1rem;
+}
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 .form-input {
   width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1.5px solid var(--gold-pale);
-  background: var(--cream);
+  padding: 0.72rem 1rem;
+  border: 1px solid rgba(201, 151, 58, 0.55);
+  background: var(--white);
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--text-dark);
   outline: none;
-  transition: border-color var(--transition);
+  border-radius: 4px;
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
-.form-input:focus { border-color: var(--gold); }
-.form-input::placeholder { color: var(--text-light); }
-textarea.form-input { resize: vertical; min-height: 120px; margin-bottom: 1rem; }
-.form-submit { text-align: center; margin-top: 1rem; }
+.form-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 151, 58, 0.12);
+}
+.form-input::placeholder { color: #b38c59; }
+.form-input-phone {
+  max-width: calc(50% - 0.8rem);
+}
+.form-input-message {
+  resize: vertical;
+  min-height: 215px;
+  padding-top: 0.9rem;
+}
+.form-submit {
+  text-align: center;
+  margin-top: 2rem;
+}
+.contact-card .btn-primary {
+  min-width: 300px;
+  padding: 0.82rem 2.4rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: #99193f;
+}
+.contact-card .btn-primary:hover {
+  background: #b21f4a;
+}
 
 /* ===== FOOTER ===== */
 .footer {
@@ -1181,7 +1212,7 @@ textarea.form-input { resize: vertical; min-height: 120px; margin-bottom: 1rem; 
 
 .contact-page-section {
   position: relative;
-  background: linear-gradient(180deg, var(--cream-dark) 0%, #f8efe4 100%);
+  background: linear-gradient(180deg, #f7ecde 0%, #fbf1e4 100%);
   overflow: hidden;
 }
 .contact-info-grid {
@@ -1261,6 +1292,13 @@ textarea.form-input { resize: vertical; min-height: 120px; margin-bottom: 1rem; 
 @media (max-width: 1024px) {
   .hero::before { background-position: 73% 100%; background-size: clamp(340px, 38vw, 470px) auto; }
   .hero-content { max-width: 48%; padding: 7.6rem 0 3rem 3.5rem; }
+  .contact-card {
+    max-width: 100%;
+    padding: 3rem 2.5rem 2.5rem;
+  }
+  .form-input-phone {
+    max-width: 100%;
+  }
   .mandala-contact-left { width: 300px; left: -9%; bottom: -4%; opacity: 0.16; }
   .mandala-contact-right { width: 220px; right: -6%; top: 22%; opacity: 0.1; }
   .mandala-contact-top { width: 220px; right: 12%; opacity: 0.12; }
@@ -1303,6 +1341,28 @@ textarea.form-input { resize: vertical; min-height: 120px; margin-bottom: 1rem; 
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1rem; }
   .footer-bottom-links { gap: 1.5rem; flex-wrap: wrap; }
   .form-row { grid-template-columns: 1fr; }
+  .contact-section { padding: 2rem 0; }
+  .contact-card {
+    padding: 2rem 1.25rem;
+    border-radius: 14px;
+  }
+  .contact-card h2 {
+    margin-bottom: 1.3rem;
+  }
+  .form-row,
+  .form-stack {
+    gap: 0.85rem;
+  }
+  .form-input {
+    font-size: 0.95rem;
+  }
+  .form-input-message {
+    min-height: 180px;
+  }
+  .contact-card .btn-primary {
+    width: 100%;
+    min-width: 0;
+  }
   .guru-grid, .journey-grid, .unique-grid, .guru-hero-grid { grid-template-columns: 1fr; }
   .gallery-masonry { columns: 2; }
   .training-cols { grid-template-columns: 1fr; }

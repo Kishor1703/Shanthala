@@ -96,8 +96,8 @@ export default function Home() {
         <div className="container">
           <div className="divider"><div className="divider-diamond"></div></div>
           <div className="reveal">
-            <span className="section-tag">Our Art</span>
-            <h2 className="section-title" style={{ textAlign: 'center', fontStyle: 'var(--font-body)' }}>The Art of Bharatanatyam</h2>
+            {/* <span className="section-tag">Our Art</span> */}
+            <h2 className="section-title" style={{ textAlign: 'center', fontStyle: 'var(--font-body)', textTransform: 'uppercase' }}>The Art of Bharatanatyam</h2>
           </div>
           <p className="reveal" style={{ transitionDelay: '0.15s' }}>
             At Shanthala Nritya Angala, we are dedicated to preserving and promoting the ancient classical dance form of Bharatanatyam. Our school nurtures students in the authentic tradition, emphasizing technique, expression, and spiritual connection.
@@ -105,7 +105,7 @@ export default function Home() {
           <p className="reveal" style={{ transitionDelay: '0.25s', marginTop: '1rem' }}>
             Through disciplined training and devotion, we guide each student on their journey to master this sacred art form that has been passed down through generations.
           </p>
-          <div className="divider reveal" style={{ transitionDelay: '0.35s' }}><div className="divider-diamond"></div></div>
+          {/* <div className="divider reveal" style={{ transitionDelay: '0.35s' }}><div className="divider-diamond"></div></div> */}
         </div>
       </section>
 
@@ -128,6 +128,7 @@ export default function Home() {
 
       <section className="guru-section">
         <div className="container">
+          <div className="divider"><div className="divider-diamond"></div></div>
           <div className="guru-grid">
             <div className="guru-image-wrap reveal-left">
               <img
@@ -194,7 +195,7 @@ export default function Home() {
         <div className="container">
           <div className="gallery-header reveal">
             <span className="section-tag">Gallery</span>
-            <h2 className="section-title" style={{ fontStyle: 'italic' }}>A Glimpse Into Our Dance Journey</h2>
+            <h2 className="section-title" style={{ fontStyle: 'var(--font-body)', textTransform: 'uppercase' }}>A Glimpse Into Our Dance Journey</h2>
           </div>
           <div className="gallery-grid">
             {[
@@ -218,14 +219,17 @@ export default function Home() {
 
       <section className="contact-section">
         <div className="container">
+          <div className="divider"><div className="divider-diamond"></div></div>
           <div className="contact-card reveal">
             <h2>Contact Us</h2>
             <div className="form-row">
               <input className="form-input" type="text" placeholder="Name" />
               <input className="form-input" type="email" placeholder="Email" />
             </div>
-            <input className="form-input" type="tel" placeholder="Phone Number" style={{ width: '100%', marginBottom: '1rem' }} />
-            <textarea className="form-input" placeholder="Message"></textarea>
+            <div className="form-stack">
+              <input className="form-input form-input-phone" type="tel" placeholder="Phone Number" />
+              <textarea className="form-input form-input-message" placeholder="Message"></textarea>
+            </div>
             <div className="form-submit">
               <button className="btn-primary">Submit</button>
             </div>
