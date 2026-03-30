@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { siteAssets } from '../siteAssets'
+import './Home.css'
 
 const DANCE_IMGS = [
   siteAssets.stageRed,
@@ -154,7 +155,7 @@ export default function Home() {
       <section className="classes-section">
         <div className="container">
           <div className="classes-header reveal">
-            <span className="section-tag">What We Offer</span>
+            {/* <span className="section-tag">What We Offer</span> */}
             <h2 className="section-title">Classes Offered</h2>
             <p >
               Our classes focus on building strong fundamentals in Bharatanatyam, nurturing grace, discipline, and expression in every student

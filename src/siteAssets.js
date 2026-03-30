@@ -1,5 +1,5 @@
 import mandala from './assets/mandala.jpg'
-import hero from './assets/hero.png'
+import hero from './assets/hero.jpg'
 import heroLeft from './assets/1.png'
 import heroRight from './assets/2.png'
 import heroTop from './assets/3.png'
@@ -28,8 +28,12 @@ import disciplineIcon from './assets/discipline.png'
 import spi from './assets/spi.png'
 import grow from './assets/growth.png'
 import crown from './assets/game-icons_crown.png'
+import RB from './assets/5.png'
+import LS from './assets/6.png'
 
 export const siteAssets = {
+  LS,
+  RB,
   crown,
   grow,
   spi,

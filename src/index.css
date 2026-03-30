@@ -427,124 +427,6 @@ ul { list-style: none; }
 }
 .guru-link:hover { color: var(--crimson); border-color: var(--crimson); }
 
-/* ===== CLASSES SECTION ===== */
-.classes-section {
-  background: var(--crimson-dark);
-  padding: 2.6rem 0 2rem;
-  position: relative;
-}
-.classes-section .section-title {
-  color: var(--white);
-  font-size: clamp(2.4rem, 4vw, 3.3rem);
-}
-.classes-section .section-tag { display: none; }
-.classes-header { text-align: center; margin-bottom: 3rem; }
-.classes-header p {
-  color: var(--gold);
-  font-size: 0.88rem;
-  margin: 0.55rem auto 0;
-  max-width: 700px;
-}
-.classes-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4.25rem;
-  max-width: 1040px;
-  margin: 0 auto;
-  justify-items: center;
-}
-.class-card {
-  background: var(--white);
-  border: 1px solid rgba(201,151,58,0.5);
-  padding: 1.9rem 1.5rem 1.2rem;
-  text-align: center;
-  transition: all var(--transition);
-  cursor: pointer;
-  border-radius: 4px;
-  height: 300px;
-  width: 280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.class-card:hover {
-  background: var(--cream);
-  transform: translateY(-6px);
-  border-color: var(--gold);
-}
-.class-icon {
-  width: 74px;
-  height: 74px;
-  margin: 0 auto 0.8rem;
-  display: grid;
-  place-items: center;
-  color: #99610b;
-}
-.class-icon svg,
-.class-icon img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-}
-.class-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  color: var(--crimson);
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-}
-.class-card p {
-  color: var(--text-mid);
-  font-size: 0.82rem;
-  line-height: 1.35;
-  max-width: 220px;
-  margin: 0 auto;
-}
-.class-card-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: auto;
-  padding-top: 1.25rem;
-  color: var(--gold);
-}
-.class-card-divider span {
-  width: 42px;
-  height: 1px;
-  background: var(--gold);
-}
-.class-card-divider i {
-  width: 11px;
-  height: 11px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  display: block;
-  position: relative;
-}
-.class-card-divider i::before {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  border-radius: 50%;
-  background: var(--gold);
-}
-.classes-cta {
-  text-align: center;
-  margin-top: 1.6rem;
-  display: flex;
-  justify-content: center;
-}
-.classes-section .btn-primary {
-  background: var(--white);
-  color: var(--crimson);
-  width: 220px;
-  height: 44px;
-}
-.classes-section .btn-primary:hover {
-  background: var(--cream-dark);
-}
 .section-ornament {
   display: flex;
   align-items: center;
@@ -1070,66 +952,6 @@ ul { list-style: none; }
 .testimonial-text { font-size: 0.85rem; color: var(--text-mid); line-height: 1.8; font-style: italic; }
 .testimonials-cta { text-align: center; margin-top: 2.5rem; }
 
-/* ===== CLASSES PAGE ===== */
-.classes-page { padding: 5rem 0; background: var(--white); }
-.class-detail-card {
-  background: var(--white);
-  margin-bottom: 3rem;
-  overflow: hidden;
-  box-shadow: 0 4px 30px rgba(139,26,43,0.06);
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-}
-.class-detail-card.reverse { direction: rtl; }
-.class-detail-card.reverse > * { direction: ltr; }
-.class-img { width: 100%; height: 340px; object-fit: cover; }
-.class-detail-body { padding: 3rem; }
-.class-detail-body h2 { font-family: var(--font-display); font-size: 2rem; color: var(--crimson); margin-bottom: 1rem; }
-.class-detail-body p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.9; margin-bottom: 1.5rem; }
-.eligibility-title {
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-  display: block;
-  margin-bottom: 0.75rem;
-}
-.eligibility-list { padding-left: 0; }
-.eligibility-list li {
-  font-size: 0.83rem;
-  color: var(--text-mid);
-  padding: 0.25rem 0;
-  padding-left: 1.2rem;
-  position: relative;
-}
-.eligibility-list li::before {
-  content: '◆';
-  position: absolute;
-  left: 0;
-  color: var(--gold);
-  font-size: 0.5rem;
-  top: 0.45rem;
-}
-
-/* Arangetram special card */
-.arangetram-card {
-  background: var(--white);
-  padding: 3.5rem;
-  box-shadow: 0 4px 30px rgba(139,26,43,0.06);
-}
-.arangetram-card h2 { font-family: var(--font-display); font-size: 2rem; color: var(--crimson); margin-bottom: 1rem; }
-.arangetram-card > p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.9; margin-bottom: 2rem; }
-.training-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-.training-col h4 {
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 0.75rem;
-}
-
 /* ===== GALLERY PAGE ===== */
 .gallery-page {
   position: relative;
@@ -1307,12 +1129,8 @@ ul { list-style: none; }
   .mandala-gallery-right { width: 240px; right: -6%; opacity: 0.1; }
   .mandala-gallery-top { width: 220px; opacity: 0.1; }
   .hero-title { font-size: clamp(3rem, 5.4vw, 4.8rem); }
-  .classes-grid { grid-template-columns: repeat(2, 1fr); }
   .values-grid { grid-template-columns: repeat(2, 1fr); }
   .testimonials-grid { grid-template-columns: 1fr; }
-  .class-detail-card { grid-template-columns: 1fr; }
-  .class-detail-card.reverse { direction: ltr; }
-  .class-img { height: 260px; }
   .guru-achievements-grid { grid-template-columns: 1fr; }
 }
 
@@ -1366,9 +1184,7 @@ ul { list-style: none; }
   }
   .guru-grid, .journey-grid, .unique-grid, .guru-hero-grid { grid-template-columns: 1fr; }
   .gallery-masonry { columns: 2; }
-  .training-cols { grid-template-columns: 1fr; }
   .values-grid { grid-template-columns: 1fr 1fr; }
-  .classes-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-info-grid { grid-template-columns: 1fr; }
   .section-ornament {
@@ -1377,332 +1193,233 @@ ul { list-style: none; }
   
 }
 
-/* ===== CLASSES PAGE OVERRIDES ===== */
-.classes-page .classes-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.35rem;
-  margin-bottom: 2.4rem;
+.classes-page {
+  padding: 6rem 0 5rem;
+  background: #ffffff;       
 }
 
-.class-detail-card {
-  background: #fbf2e8;
-  padding: 1.1rem;
-  display: grid;
-  grid-template-columns: minmax(180px, 0.9fr) minmax(0, 1fr);
-  gap: 1.1rem;
-  align-items: start;
-  margin-bottom: 0;
-  overflow: visible;
-  box-shadow: none;
-  border: 1px solid rgba(201,151,58,0.12);
-}
-
-.class-card-media {
-  min-width: 0;
-}
-
-.class-img {
-  width: 100%;
-  height: 100%;
-  min-height: 290px;
-  object-fit: cover;
-}
-
-.class-detail-body {
-  padding: 0.15rem 0.1rem 0.15rem 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.class-detail-body h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 1.7vw, 1.65rem);
-  font-weight: 500;
-  color: var(--crimson);
-  line-height: 0.95;
-  margin-top: 0.65rem;
-  margin-bottom: 0.45rem;
-}
-
-.class-copy {
-  font-size: 0.7rem;
-  color: var(--text-mid);
-  line-height: 1.12;
-  margin-bottom: 0.55rem;
-}
-
-.eligibility-title {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  color: var(--crimson);
-  display: block;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(201,151,58,0.4);
-  padding-bottom: 0.18rem;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.eligibility-list {
-  padding-left: 0;
-  width: 100%;
-}
-
-.eligibility-list li {
-  font-size: 0.68rem;
-  color: var(--text-mid);
-  line-height: 1.05;
-  padding: 0.05rem 0;
-  padding-left: 1.2rem;
-  position: relative;
-}
-
-.eligibility-list li::before {
-  content: '◆';
-  position: absolute;
-  left: 0;
-  color: var(--crimson);
-  font-size: 0.45rem;
-  top: 0.5rem;
-}
-
-.class-card-action {
-  margin-top: auto;
-}
-
-.class-card-action .btn-primary,
-.arangetram-content .btn-primary {
-  min-width: 0;
-  padding: 0.38rem 1.35rem;
-  font-size: 0.62rem;
-  line-height: 1;
-  border-radius: 0;
-}
-
-.arangetram-card {
-  background: #fbf2e8;
-  padding: 1.35rem;
-  box-shadow: none;
-  border: 1px solid rgba(201,151,58,0.12);
-}
-
-.arangetram-layout {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.78fr) minmax(0, 1.42fr);
-  gap: 1.4rem;
-  align-items: start;
-}
-
-.arangetram-media {
-  min-width: 0;
-}
-
-.arangetram-img {
-  width: 100%;
-  min-height: 360px;
-  object-fit: cover;
-}
-
-.arangetram-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.arangetram-card h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.45rem, 2vw, 1.85rem);
-  font-weight: 500;
-  color: var(--crimson);
-  line-height: 0.95;
-  margin-top: 0.7rem;
-  margin-bottom: 0.45rem;
-}
-
-.training-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.8rem;
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.training-col h4 {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  color: var(--crimson);
-  margin-bottom: 0.55rem;
-  border-bottom: 1px solid rgba(201,151,58,0.4);
-  padding-bottom: 0.18rem;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-@media (max-width: 980px) {
-  .classes-grid,
-  .training-cols {
-    grid-template-columns: 1fr;
-  }
-
-  .class-detail-card,
-  .arangetram-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .class-img,
-  .arangetram-img {
-    min-height: 260px;
-  }
-}
-
-/* ===== CLASSES PAGE REFERENCE MATCH ===== */
 .classes-page .container {
   max-width: 1300px;
 }
 
-.classes-header {
+/* ── page heading ── */
+.cp-header {
   text-align: center;
-  margin-bottom: 1.15rem;
+  margin-bottom: 2.4rem;
 }
 
-.classes-header h1 {
+.cp-heading {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 2.7vw, 2.55rem);
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
   font-weight: 700;
   color: var(--crimson);
   text-transform: uppercase;
-  letter-spacing: 0.025em;
-  margin-bottom: 0.35rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.6rem;
 }
 
-.classes-header-divider {
+/* ── 2-column card grid ── */
+.cp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── individual card ── */
+.cp-card {
+  display: grid;
+  grid-template-columns: 2fr 2.2fr;   /* photo ~45 %, content ~55 % */
+  min-height: 370px;
+  background: transparent;
+  border: 1px solid rgba(201, 151, 58, 0.18);
+  overflow: hidden;
+}
+
+/* photo column */
+.cp-card-img-wrap {
+  overflow: hidden;
+}
+
+.cp-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.55s ease;
+}
+
+.cp-card:hover .cp-card-img {
+  transform: scale(1.04);
+}
+
+/* content column — shared by card and arangetram */
+.cp-card-body {
+  background: #fcf4eb;
+  padding: 1.4rem 1.3rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* description paragraph */
+.cp-card-desc {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-mid);
+  line-height: 1.65;
+  margin-bottom: 0.9rem;
+}
+
+/* "Eligibility" / "Training Includes" label */
+.cp-eligibility-label {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--crimson);
+  border-bottom: 1.5px solid rgba(201, 151, 58, 0.75);
+  padding-bottom: 0.12rem;
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.01em;
+}
+
+/* bullet list */
+.cp-eligibility-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.9rem;
+  width: 100%;
+}
+
+.cp-eligibility-list li {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  line-height: 1.55;
+  padding: 0.08rem 0 0.08rem 1rem;
+  position: relative;
+  font-weight: 600;
+}
+
+.cp-eligibility-list li::before {
+  content: '◆';
+  position: absolute;
+  left: 0;
+  color: var(--crimson);
+  font-size: 0.38rem;
+  top: 0.42rem;
+}
+
+/* card title — large, at the bottom */
+.cp-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 500;
+  color: var(--crimson);
+  line-height: 1.15;
+  margin-top: auto;           /* push to bottom of flex column */
+  margin-bottom: 0.75rem;
+}
+
+/* enquire button */
+.cp-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-}
-
-.classes-header-divider span {
-  width: 2.2rem;
-  height: 1px;
-  background: rgba(201,151,58,0.95);
-}
-
-.classes-header-divider i {
-  width: 0.34rem;
-  height: 0.34rem;
-  display: block;
+  justify-content: center;
   background: var(--crimson);
-  transform: rotate(45deg);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  padding: 0.52rem 1.5rem;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.classes-page .classes-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.15rem;
-  margin-bottom: 1.2rem;
+.cp-btn:hover {
+  background: var(--crimson-light);
+  transform: translateY(-2px);
 }
 
-.classes-page .class-detail-card {
-  background: #fcf4eb;
-  padding: 0.88rem 0.82rem;
-  grid-template-columns: 1.1fr 1.97fr;
-  gap: 0.58rem;
-  align-items: start;
-  border: 1px solid rgba(201,151,58,0.08);
+/* ── Arangetram — full-width card ── */
+.cp-arangetram {
+  display: grid;
+  grid-template-columns: 2fr 3.2fr;  /* photo narrower than content */
+  min-height: 380px;
+  background: transparent;
+  border: 1px solid rgba(201, 151, 58, 0.18);
+  overflow: hidden;
 }
 
-.classes-page .class-img {
-  min-height: 235px;
+.cp-arangetram-img-wrap {
+  overflow: hidden;
+  background: #050505;              /* dark bg as in screenshot */
 }
 
-.classes-page .class-detail-body {
-  padding: 0.02rem 0 0;
+.cp-arangetram-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.55s ease;
 }
 
-.classes-page .class-detail-body h2 {
-  font-size: clamp(1.2rem, 1.65vw, 1.32rem);
-  font-weight: 700;
-  line-height: 1.04;
-  margin-top: 0.42rem;
-  margin-bottom: 0.36rem;
+.cp-arangetram:hover .cp-arangetram-img {
+  transform: scale(1.03);
 }
 
-.classes-page .class-copy {
-  font-size: 0.85rem;
-  line-height: 1.34;
-  margin-bottom: 0.36rem;
-  font-weight: 600;
+/* two-column training list inside arangetram */
+.cp-training-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  width: 100%;
+  margin-bottom: 0.9rem;
 }
 
-.classes-page .eligibility-title,
-.classes-page .training-col h4 {
-  font-size: 0.70rem;
-  font-weight: 700;
-  margin-bottom: 0.28rem;
-  padding-bottom: 0.08rem;
-  border-bottom: 1px solid rgba(201,151,58,0.52);
-}
-
-.classes-page .eligibility-list li {
-  font-size: 0.7rem;
-  line-height: 1.22;
-  padding: 0.03rem 0;
-  padding-left: 0.7rem;
-  font-weight: 600;
-}
-
-.classes-page .eligibility-list li::before {
-  content: '\25C6';
-  font-size: 0.24rem;
-  top: 0.3rem;
-}
-
-.classes-page .class-card-action .btn-primary,
-.classes-page .arangetram-content .btn-primary {
-  padding: 0.22rem 0.92rem;
-  font-size: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 0;
-}
-
-.classes-page .arangetram-card {
-  background: #fcf4eb;
-  padding: 0.95rem 0.9rem;
-  border: 1px solid rgba(201,151,58,0.08);
-}
-
-.classes-page .arangetram-layout {
-  grid-template-columns: 1.02fr 1.9fr;
-  gap: 1rem;
-}
-
-.classes-page .arangetram-img {
-  min-height: 200px;
-}
-
-.classes-page .arangetram-card h2 {
-  font-size: clamp(1.12rem, 1.8vw, 1.35rem);
-  font-weight: 700;
-  line-height: 1.04;
-  margin-top: 0.42rem;
-  margin-bottom: 0.24rem;
-}
-
-.classes-page .training-cols {
-  gap: 1.05rem;
-}
-
-@media (max-width: 980px) {
-  .classes-page .classes-grid,
-  .classes-page .training-cols,
-  .classes-page .class-detail-card,
-  .classes-page .arangetram-layout {
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .cp-grid {
     grid-template-columns: 1fr;
   }
 
-  .classes-page .class-img,
-  .classes-page .arangetram-img {
-    min-height: 260px;
+  .cp-card {
+    grid-template-columns: 1fr 1.3fr;
+    min-height: 280px;
+  }
+
+  .cp-arangetram {
+    grid-template-columns: 1fr 1.5fr;
+  }
+
+  .cp-training-cols {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .cp-card,
+  .cp-arangetram {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-card-img,
+  .cp-arangetram-img {
+    height: 260px;
+  }
+
+  .cp-card-body {
+    padding: 1.2rem 1rem;
+  }
+
+  .cp-card-title {
+    font-size: 1.6rem;
   }
 }
