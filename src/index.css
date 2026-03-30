@@ -618,7 +618,8 @@ ul { list-style: none; }
 }
 .contact-card {
   background: var(--white);
-  max-width: 1280px;
+  max-width: 800px;
+  
   margin: 0 auto;
   padding: 3.8rem 5.6rem 3rem;
   border-radius: 18px;
