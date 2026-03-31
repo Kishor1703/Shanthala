@@ -580,7 +580,9 @@ const styles = `
   .ad-modal-overlay {
     position: fixed;
     inset: 0;
-    background: var(--crimson-dark);
+    background: rgba(44, 24, 16, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
