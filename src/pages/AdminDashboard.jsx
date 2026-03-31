@@ -723,7 +723,31 @@ const styles = `
   }
   @media (max-width: 600px) {
     .ad-table-head { display: none; }
-    .ad-table-row { grid-template-columns: 1fr; }
+    .ad-table-row {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.15rem 0.5rem;
+    }
+    .ad-td {
+      min-width: 0;
+      padding: 0.85rem 0.35rem;
+    }
+    .ad-td-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ad-table-row .ad-td:nth-child(2),
+    .ad-table-row .ad-td:nth-child(3) {
+      justify-content: flex-end;
+      white-space: nowrap;
+    }
+    .ad-badge {
+      padding: 0.38rem 0.7rem;
+      font-size: 0.5rem;
+      letter-spacing: 0.16em;
+    }
     .ad-main { padding: 1rem; }
     .ad-photo-grid { grid-template-columns: 1fr; }
     .ad-photo-card:nth-child(n) { border-right: none; }
