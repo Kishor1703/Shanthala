@@ -1,429 +1,760 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+﻿import { useEffect, useMemo, useState } from 'react'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { apiFetch, clearAuthToken, getAuthHeaders, getAuthToken } from '../lib/api'
 import { siteAssets } from '../siteAssets'
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500&display=swap');
 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   .ad-shell {
-    min-height: 100vh;
-    background: #f5ead8;
-    font-family: 'Cormorant Garamond', serif;
-    color: #2c1810;
+    --crimson: #8B1A2B;
+    --crimson-dark: #6B1020;
+    --crimson-light: #C4294A;
+    --gold: #C9973A;
+    --gold-light: #E8B84B;
+    --gold-pale: #F5E6C8;
+    --cream: #FDF6EE;
+    --cream-dark: #F5EAD8;
+    --text-dark: #2C1810;
+    --text-mid: #5C3D2E;
+    --text-light: #9C7B6E;
+    --white: #FFFFFF;
   }
 
-  /* ── TOPBAR ── */
-  .ad-topbar {
+  .ad-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 256px minmax(0, 1fr);
+    background: var(--cream-dark);
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--text-dark);
+  }
+
+  /* ── Sidebar ── */
+  .ad-sidebar {
+    min-height: 100vh;
     position: sticky;
     top: 0;
-    z-index: 50;
-    background: rgba(253,246,238,0.97);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(201,151,58,0.22);
-    padding: 0.85rem 2.8rem;
+    background: var(--crimson-dark);
+    color: var(--cream);
+    padding: 1.75rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .ad-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--gold);
+    margin-bottom: 2rem;
+  }
+  .ad-sidebar-logo {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--white);
+    object-fit: contain;
+    padding: 0.3rem;
+  }
+  .ad-sidebar-brand-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .ad-sidebar-brand-sub {
+    color: var(--gold-pale);
+    font-size: 0.72rem;
+    margin-top: 0.15rem;
+  }
+
+  .ad-sidebar-section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    margin-bottom: 0.6rem;
+  }
+  .ad-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+    margin-bottom: auto;
+  }
+  .ad-nav-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.78rem 0.9rem;
+    border: none;
+    background: transparent;
+    border-radius: 3px;
+    color: var(--gold-pale);
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.18s, color 0.18s;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.86rem;
+  }
+  .ad-nav-btn:hover { background: var(--crimson); color: var(--white); }
+  .ad-nav-btn.active { background: var(--crimson); color: var(--white); }
+  .ad-nav-btn.disabled { opacity: 0.38; cursor: default; pointer-events: none; }
+  .ad-nav-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+  .ad-sidebar-footer {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 2rem;
+  }
+  .ad-side-link, .ad-side-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.72rem 0.9rem;
+    border-radius: 3px;
+    color: var(--gold-pale);
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.84rem;
+    transition: background 0.18s, color 0.18s;
+  }
+  .ad-side-link:hover { background: var(--crimson); color: var(--white); }
+  .ad-side-logout { color: var(--gold-light); }
+  .ad-side-logout:hover { background: var(--crimson); color: var(--white); }
+  .ad-side-link svg, .ad-side-logout svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+  /* ── Main ── */
+  .ad-main {
+    min-width: 0;
+    padding: 2.5rem 2.75rem 3rem;
+  }
+  .ad-page { animation: adIn 0.3s ease both; }
+  @keyframes adIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .ad-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.6rem;
+  }
+  .ad-page-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.1;
+  }
+  .ad-page-header p {
+    color: var(--text-light);
+    font-size: 0.82rem;
+    margin-top: 0.28rem;
+  }
+  .ad-header-action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.52rem 1.1rem;
+    border: 1.5px solid var(--text-dark);
+    background: transparent;
+    color: var(--text-dark);
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .ad-header-action:hover { background: var(--crimson); color: var(--white); }
+
+  .ad-global-error {
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.25rem;
+    border-left: 3px solid var(--crimson);
+    background: var(--gold-pale);
+    color: var(--crimson);
+    font-size: 0.78rem;
+  }
+  .ad-loading {
+    padding: 4rem;
+    text-align: center;
+    color: var(--text-light);
+    font-style: italic;
+  }
+
+  /* ── Stats bar (queries) ── */
+  .ad-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--gold);
+    background: var(--white);
+    margin-bottom: 1.6rem;
+  }
+  .ad-stat {
+    padding: 1.35rem 1rem;
+    text-align: center;
+    border-right: 1px solid var(--gold);
+  }
+  .ad-stat:last-child { border-right: none; }
+  .ad-stat.active { background: var(--crimson-dark); color: var(--white); }
+  .ad-stat-value {
+    font-family: 'Cinzel', serif;
+    font-size: 1.7rem;
+    line-height: 1;
+    color: inherit;
+  }
+  .ad-stat-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.54rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.4rem;
+  }
+  .ad-stat.active .ad-stat-label { color: var(--gold-pale); }
+
+  /* ── Queries table ── */
+  .ad-table-wrap {
+    border: 1px solid var(--gold);
+    background: var(--white);
+  }
+  .ad-table-head {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr 1.1fr;
+    border-bottom: 1px solid var(--gold);
+    padding: 0 0.5rem;
+  }
+  .ad-th {
+    padding: 1rem 0.85rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.52rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+  .ad-table-row {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr 1.1fr;
+    border-bottom: 1px solid var(--gold-pale);
+    padding: 0 0.5rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .ad-table-row:last-child { border-bottom: none; }
+  .ad-table-row:hover { background: var(--cream); }
+  .ad-td {
+    padding: 1.05rem 0.85rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.84rem;
+    color: var(--text-mid);
+    min-width: 0;
+  }
+  .ad-td-name { font-weight: 600; color: var(--text-dark); font-size: 0.88rem; }
+  .ad-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.72rem;
+    border: 1px solid currentColor;
+    font-family: 'Cinzel', serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .ad-badge--new { color: var(--crimson-dark); border-color: var(--crimson-dark); }
+  .ad-badge--read { color: var(--gold); border-color: var(--gold); }
+  .ad-badge--replied { color: var(--crimson-light); border-color: var(--crimson-light); }
+
+  .ad-actions-cell { display: flex; align-items: center; gap: 0.4rem; }
+  .ad-act-btn {
+    padding: 0.32rem 0.65rem;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--text-mid);
+    font-family: 'Cinzel', serif;
+    font-size: 0.52rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s;
+  }
+  .ad-act-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+  .ad-act-btn--danger { border-color: var(--crimson-light); color: var(--crimson-light); }
+  .ad-act-btn--danger:hover { border-color: var(--crimson-dark); color: var(--crimson-dark); }
+
+  .ad-empty {
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--text-light);
+    font-style: italic;
+    font-size: 0.82rem;
+  }
+
+  /* ── Query detail view ── */
+  .ad-detail-topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    animation: adFadeDown 0.5s ease both;
+    margin-bottom: 1.8rem;
   }
-  .ad-topbar-brand { display: flex; align-items: center; gap: 0.9rem; }
-  .ad-topbar-logo  { width: 44px; height: 44px; object-fit: contain; }
-  .ad-topbar-text  { font-family: 'Cinzel', serif; }
-  .ad-topbar-text h1 {
-    font-size: 0.88rem; font-weight: 500; color: #6b1020;
-    letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.1;
+  .ad-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-mid);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: color 0.18s;
   }
-  .ad-topbar-text span {
-    font-size: 0.56rem; letter-spacing: 0.26em;
-    text-transform: uppercase; color: #c9973a;
+  .ad-back-btn:hover { color: var(--crimson); }
+  .ad-detail-topbar-actions { display: flex; align-items: center; gap: 0.6rem; }
+  .ad-topbar-btn {
+    padding: 0.45rem 1.05rem;
+    border: 1.5px solid var(--gold);
+    background: transparent;
+    color: var(--text-mid);
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.18s;
   }
-  .ad-topbar-right { display: flex; align-items: center; gap: 1.2rem; }
-  .ad-unread-pill {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.32rem 0.85rem;
-    background: rgba(139,26,43,0.08); border: 1px solid rgba(139,26,43,0.18);
-    border-radius: 20px; font-family: 'Cinzel', serif; font-size: 0.6rem;
-    letter-spacing: 0.14em; text-transform: uppercase; color: #8b1a2b;
-  }
-  .ad-unread-dot {
-    width: 7px; height: 7px; background: #8b1a2b;
-    border-radius: 50%; animation: adPulse 1.8s ease infinite;
-  }
-  .ad-logout-btn {
-    display: flex; align-items: center; gap: 0.45rem;
-    padding: 0.5rem 1.2rem; background: transparent;
-    border: 1.5px solid rgba(139,26,43,0.3); color: #8b1a2b;
-    font-family: 'Cinzel', serif; font-size: 0.6rem;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    cursor: pointer; border-radius: 3px; transition: all 0.3s ease;
-  }
-  .ad-logout-btn:hover { background: #8b1a2b; color: #fff; border-color: #8b1a2b; }
+  .ad-topbar-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+  .ad-topbar-btn--danger { border-color: var(--crimson-light); color: var(--crimson-light); }
+  .ad-topbar-btn--danger:hover { border-color: var(--crimson-dark); color: var(--crimson-dark); }
 
-  /* ── HERO ── */
-  .ad-hero {
-    position: relative;
-    background: linear-gradient(135deg, #5a0c1c 0%, #7a1428 55%, #4a0a18 100%);
-    overflow: hidden; padding: 2.8rem 2.8rem 3rem;
-    animation: adFadeUp 0.7s ease 0.1s both;
+  .ad-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) 280px;
+    gap: 1.5rem;
+    align-items: start;
   }
-  .ad-hero::before {
-    content: ''; position: absolute; inset: 0;
-    background-image:
-      radial-gradient(circle at 80% 50%, rgba(201,151,58,0.14) 0%, transparent 55%),
-      radial-gradient(circle at 10% 80%, rgba(201,151,58,0.08) 0%, transparent 45%);
-    pointer-events: none;
+  .ad-detail-card {
+    background: var(--white);
+    border: 1px solid var(--gold);
+    padding: 2.2rem 2.4rem;
   }
-  .ad-hero::after {
-    content: ''; position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; opacity: 0.5;
+  .ad-detail-client-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    margin-bottom: 0.3rem;
   }
-  .ad-hero-inner {
-    position: relative; z-index: 1;
-    display: grid; grid-template-columns: 1fr auto;
-    gap: 3rem; align-items: center;
-    max-width: 1280px; margin: 0 auto;
+  .ad-detail-date-label {
+    color: var(--text-light);
+    font-size: 0.78rem;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--gold-pale);
   }
-  .ad-hero-eyebrow {
-    font-family: 'Cinzel', serif; font-size: 0.58rem;
-    letter-spacing: 0.3em; text-transform: uppercase; color: #c9973a;
-    margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.7rem;
+  .ad-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem 2rem;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--gold-pale);
   }
-  .ad-hero-eyebrow::before {
-    content: ''; display: inline-block; width: 24px; height: 1.5px; background: #c9973a;
+  .ad-detail-field label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 0.4rem;
   }
-  .ad-hero-heading {
-    font-size: clamp(1.5rem, 2.2vw, 2.2rem); font-weight: 300; color: #fff;
-    line-height: 1.25; font-style: italic; margin-bottom: 0.7rem; max-width: 560px;
+  .ad-detail-field p {
+    color: var(--text-dark);
+    font-size: 0.86rem;
   }
-  .ad-hero-heading em { font-style: normal; color: #e8b84b; }
-  .ad-hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.58); line-height: 1.75; max-width: 440px; }
-  .ad-hero-images { display: flex; gap: 0.75rem; flex-shrink: 0; }
-  .ad-hero-img-main {
-    width: 140px; height: 175px; object-fit: cover; object-position: top;
-    border-radius: 3px; border: 1.5px solid rgba(201,151,58,0.3);
-    filter: saturate(0.75) brightness(0.85);
+  .ad-detail-field a {
+    color: var(--text-dark);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
-  .ad-hero-img-accent {
-    width: 90px; height: 120px; object-fit: cover; object-position: top;
-    border-radius: 3px; border: 1.5px solid rgba(201,151,58,0.25);
-    filter: saturate(0.65) brightness(0.75); align-self: flex-end;
+  .ad-msg-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 0.6rem;
   }
-
-  /* ── STATS ── */
-  .ad-stats {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    border-bottom: 1px solid rgba(201,151,58,0.2);
-    animation: adFadeUp 0.6s ease 0.2s both;
-  }
-  .ad-stat {
-    padding: 1.4rem 2.8rem; border-right: 1px solid rgba(201,151,58,0.2);
-    background: #fdf6ee; transition: background 0.3s ease;
-  }
-  .ad-stat:last-child { border-right: none; }
-  .ad-stat:hover { background: #fff; }
-  .ad-stat-label {
-    font-family: 'Cinzel', serif; font-size: 0.56rem;
-    letter-spacing: 0.26em; text-transform: uppercase; color: #c9973a; margin-bottom: 0.3rem;
-  }
-  .ad-stat-value {
-    font-family: 'Cinzel', serif; font-size: 2.2rem;
-    font-weight: 400; color: #6b1020; line-height: 1;
-  }
-  .ad-stat-sub { font-size: 0.76rem; color: #9c7b6e; margin-top: 0.25rem; }
-
-  /* ── TAB NAV ── */
-  .ad-tab-nav {
-    background: #fdf6ee;
-    border-bottom: 2px solid rgba(201,151,58,0.2);
-    padding: 0 2.8rem; display: flex; align-items: flex-end;
-    animation: adFadeUp 0.5s ease 0.28s both;
-  }
-  .ad-tab {
-    position: relative; display: flex; align-items: center; gap: 0.55rem;
-    padding: 1rem 1.8rem 0.9rem; background: transparent; border: none;
-    border-bottom: 2.5px solid transparent; margin-bottom: -2px;
-    font-family: 'Cinzel', serif; font-size: 0.72rem;
-    letter-spacing: 0.18em; text-transform: uppercase; color: #9c7b6e;
-    cursor: pointer; transition: color 0.28s ease, border-color 0.28s ease, background 0.28s ease;
-    white-space: nowrap;
-  }
-  .ad-tab:hover { color: #6b1020; background: rgba(201,151,58,0.04); }
-  .ad-tab.active { color: #6b1020; border-bottom-color: #8b1a2b; }
-  .ad-tab-icon { width: 15px; height: 15px; opacity: 0.7; flex-shrink: 0; }
-  .ad-tab.active .ad-tab-icon { opacity: 1; }
-  .ad-tab-count {
-    display: inline-flex; align-items: center; justify-content: center;
-    min-width: 18px; height: 18px; padding: 0 5px;
-    background: rgba(139,26,43,0.1); border: 1px solid rgba(139,26,43,0.18);
-    border-radius: 10px; font-size: 0.58rem; color: #8b1a2b; font-weight: 500;
-  }
-  .ad-tab.active .ad-tab-count { background: #8b1a2b; color: #fff; border-color: #8b1a2b; }
-
-  /* ── PAGE WRAPPER ── */
-  .ad-page {
-    max-width: 1280px; margin: 0 auto;
-    padding: 2.2rem 2.8rem 4rem;
-    animation: adPageIn 0.38s ease both;
-  }
-  @keyframes adPageIn {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .ad-msg-box {
+    min-height: 90px;
+    border: 1px solid var(--gold);
+    padding: 0.95rem 1.1rem;
+    background: var(--cream);
+    color: var(--text-mid);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.86rem;
+    line-height: 1.65;
   }
 
-  .ad-global-error {
-    display: flex; align-items: center; gap: 0.6rem;
-    padding: 0.85rem 1.2rem;
-    background: rgba(139,26,43,0.06); border: 1px solid rgba(139,26,43,0.2);
-    border-left: 3px solid #8b1a2b; border-radius: 4px;
-    font-size: 0.86rem; color: #8b1a2b; margin-bottom: 1.5rem;
+  /* sidebar panels */
+  .ad-detail-sidebar { display: flex; flex-direction: column; gap: 1.2rem; }
+  .ad-side-panel {
+    background: var(--white);
+    border: 1px solid var(--gold);
+    padding: 1.4rem 1.5rem;
   }
-  .ad-loading {
-    text-align: center; padding: 4rem; color: #9c7b6e;
-    font-style: italic; font-size: 0.96rem; letter-spacing: 0.04em;
+  .ad-side-panel-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 1rem;
   }
-
-  /* ── PANEL ── */
-  .ad-panel {
-    background: #fff; border: 1px solid rgba(201,151,58,0.18);
-    border-radius: 4px; overflow: hidden;
-  }
-  .ad-panel-head {
-    padding: 1.4rem 1.8rem; border-bottom: 1px solid rgba(201,151,58,0.18);
-    background: linear-gradient(to right, #fdf6ee, #fff);
-    display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
-  }
-  .ad-panel-head h2 {
-    font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 500;
-    color: #6b1020; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.2rem;
-  }
-  .ad-panel-head p { font-size: 0.82rem; color: #9c7b6e; }
-  .ad-panel-badge {
-    flex-shrink: 0; padding: 0.22rem 0.7rem;
-    background: rgba(139,26,43,0.08); border: 1px solid rgba(139,26,43,0.15);
-    border-radius: 12px; font-family: 'Cinzel', serif;
-    font-size: 0.6rem; letter-spacing: 0.12em; color: #8b1a2b;
-  }
-
-  /* ══════════════════
-     QUERIES PAGE
-  ══════════════════ */
-  .ad-queries-wrap { max-width: 860px; margin: 0 auto; }
-
-  .ad-filter-bar {
-    display: flex; align-items: center; gap: 0.5rem;
-    padding: 0.9rem 1.8rem; border-bottom: 1px solid rgba(201,151,58,0.12);
-    background: #fdfaf5; flex-wrap: wrap;
-  }
-  .ad-filter-label {
-    font-family: 'Cinzel', serif; font-size: 0.58rem;
-    letter-spacing: 0.2em; text-transform: uppercase; color: #9c7b6e; margin-right: 0.3rem;
-  }
-  .ad-filter-btn {
-    padding: 0.24rem 0.8rem; background: transparent;
-    border: 1px solid rgba(201,151,58,0.3); border-radius: 12px;
-    font-family: 'Cinzel', serif; font-size: 0.58rem;
-    letter-spacing: 0.1em; text-transform: uppercase; color: #9c7b6e;
-    cursor: pointer; transition: all 0.2s ease;
-  }
-  .ad-filter-btn:hover { border-color: #c9973a; color: #7a5c2e; }
-  .ad-filter-btn.active { background: #8b1a2b; border-color: #8b1a2b; color: #fff; }
-
-  .ad-query-list { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(201,151,58,0.3) transparent; }
-  .ad-empty { padding: 3.5rem 2rem; text-align: center; color: #9c7b6e; font-style: italic; font-size: 0.94rem; }
-
-  .ad-query-card {
-    padding: 1.5rem 1.8rem; border-bottom: 1px solid rgba(201,151,58,0.12);
-    transition: background 0.25s ease;
-  }
-  .ad-query-card:last-child { border-bottom: none; }
-  .ad-query-card:hover { background: #fdf8f2; }
-  .ad-query-top {
-    display: flex; align-items: flex-start;
-    justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem;
-  }
-  .ad-query-name {
-    font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 500;
-    color: #2c1810; margin-bottom: 0.2rem;
-  }
-  .ad-query-contact { font-size: 0.8rem; color: #9c7b6e; line-height: 1.5; }
-  .ad-badge {
-    flex-shrink: 0; padding: 0.2rem 0.75rem; border-radius: 12px;
-    font-family: 'Cinzel', serif; font-size: 0.55rem;
-    letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
-  }
-  .ad-badge--new     { background: rgba(139,26,43,0.1); color: #8b1a2b; border: 1px solid rgba(139,26,43,0.2); }
-  .ad-badge--read    { background: rgba(201,151,58,0.1); color: #8b6520; border: 1px solid rgba(201,151,58,0.25); }
-  .ad-badge--replied { background: rgba(34,100,54,0.08); color: #1a6034; border: 1px solid rgba(34,100,54,0.2); }
-  .ad-query-msg {
-    font-size: 0.88rem; color: #5c3d2e; line-height: 1.75; margin-bottom: 0.6rem;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .ad-query-date { font-size: 0.72rem; color: #b8957a; margin-bottom: 0.85rem; font-style: italic; }
-  .ad-query-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  .ad-action-btn {
-    padding: 0.3rem 0.9rem; background: transparent;
-    border: 1px solid rgba(201,151,58,0.4); color: #7a5c2e;
-    font-family: 'Cinzel', serif; font-size: 0.58rem;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    cursor: pointer; border-radius: 2px; transition: all 0.25s ease;
-  }
-  .ad-action-btn:hover { background: rgba(201,151,58,0.1); border-color: #c9973a; color: #5a3d10; }
-  .ad-action-btn--danger { border-color: rgba(139,26,43,0.3); color: #8b1a2b; }
-  .ad-action-btn--danger:hover { background: rgba(139,26,43,0.08); border-color: #8b1a2b; }
-
-  /* ══════════════════
-     GALLERY PAGE
-  ══════════════════ */
-  .ad-gallery-layout {
-    display: grid; grid-template-columns: 360px 1fr;
-    gap: 2rem; align-items: start;
-  }
-
-  /* Upload card — sticky */
-  .ad-upload-card {
-    background: #fff; border: 1px solid rgba(201,151,58,0.18);
-    border-radius: 4px; overflow: hidden;
-    position: sticky; top: calc(58px + 2.2rem);
-  }
-  .ad-gallery-preview { position: relative; height: 160px; overflow: hidden; }
-  .ad-gallery-preview img {
-    width: 100%; height: 100%; object-fit: cover; object-position: center;
-    filter: saturate(0.7) brightness(0.82); transition: transform 6s ease;
-  }
-  .ad-upload-card:hover .ad-gallery-preview img { transform: scale(1.05); }
-  .ad-gallery-preview-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(90,12,28,0.72), transparent 55%);
-  }
-  .ad-gallery-preview-label {
-    position: absolute; bottom: 0.9rem; left: 1.2rem;
-    font-family: 'Cinzel', serif; font-size: 0.62rem;
-    letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.9);
-  }
-
-  .ad-form { padding: 1.5rem 1.6rem; display: flex; flex-direction: column; gap: 0.95rem; }
-  .ad-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  .ad-field { display: flex; flex-direction: column; gap: 0.32rem; }
-  .ad-field label {
-    font-family: 'Cinzel', serif; font-size: 0.56rem;
-    letter-spacing: 0.22em; text-transform: uppercase; color: #8b1a2b;
-  }
-  .ad-field input[type="text"],
-  .ad-field input[type="file"] {
-    padding: 0.58rem 0.85rem; border: 1.5px solid rgba(201,151,58,0.28);
-    background: #fdf8f2; font-family: 'Cormorant Garamond', serif;
-    font-size: 0.92rem; color: #2c1810; outline: none; border-radius: 3px;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  .ad-quick-action-btn {
+    display: block;
     width: 100%;
+    padding: 0.78rem;
+    border: 1.5px solid var(--gold);
+    background: transparent;
+    color: var(--text-mid);
+    font-family: 'Cinzel', serif;
+    font-size: 0.54rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 0.65rem;
+    transition: all 0.18s;
+    text-align: center;
   }
-  .ad-field input[type="file"] { font-size: 0.78rem; cursor: pointer; padding: 0.42rem 0.75rem; }
-  .ad-field input:focus { border-color: #c9973a; box-shadow: 0 0 0 3px rgba(201,151,58,0.1); background: #fff; }
-  .ad-field input::placeholder { color: #b8957a; font-style: italic; }
+  .ad-quick-action-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+  .ad-quick-action-btn:last-child { margin-bottom: 0; }
+  .ad-quick-action-btn--primary {
+    background: var(--crimson-dark);
+    border-color: var(--crimson-dark);
+    color: var(--white);
+  }
+  .ad-quick-action-btn--primary:hover { background: var(--crimson); border-color: var(--crimson); }
 
-  .ad-checkbox-row { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
-  .ad-checkbox-row input[type="checkbox"] { width: 15px; height: 15px; accent-color: #8b1a2b; cursor: pointer; }
-  .ad-checkbox-row span { font-size: 0.84rem; color: #5c3d2e; }
+  .ad-timeline { display: flex; flex-direction: column; gap: 0.75rem; }
+  .ad-timeline-item { display: flex; align-items: center; gap: 0.75rem; }
+  .ad-timeline-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ad-timeline-dot.done { background: var(--crimson-dark); }
+  .ad-timeline-dot.pending { background: transparent; border: 1.5px solid var(--gold); }
+  .ad-timeline-item span { font-size: 0.78rem; color: var(--text-mid); }
+  .ad-timeline-item.pending span { color: var(--text-light); }
 
-  .ad-form-msg { padding: 0.6rem 0.9rem; border-radius: 3px; font-size: 0.82rem; line-height: 1.5; }
-  .ad-form-msg--error   { background: rgba(139,26,43,0.06); border: 1px solid rgba(139,26,43,0.18); color: #8b1a2b; }
-  .ad-form-msg--success { background: rgba(34,100,54,0.06); border: 1px solid rgba(34,100,54,0.18); color: #1a6034; }
+  /* ── Photos page ── */
+  .ad-photos-stats {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    border: 1px solid var(--gold);
+    background: var(--white);
+    margin-bottom: 1.4rem;
+  }
+  .ad-photos-stat {
+    padding: 1.15rem 0.5rem;
+    text-align: center;
+    border-right: 1px solid var(--gold);
+  }
+  .ad-photos-stat:last-child { border-right: none; }
+  .ad-photos-stat-value {
+    font-family: 'Cinzel', serif;
+    font-size: 1.35rem;
+    color: var(--text-dark);
+    line-height: 1;
+  }
+  .ad-photos-stat-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.48rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-top: 0.35rem;
+  }
 
-  .ad-upload-btn {
-    padding: 0.78rem 1.6rem; background: #8b1a2b; color: #fff;
-    font-family: 'Cinzel', serif; font-size: 0.65rem;
-    letter-spacing: 0.2em; text-transform: uppercase; border: none;
-    border-radius: 3px; cursor: pointer; width: 100%;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  .ad-cat-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.4rem;
   }
-  .ad-upload-btn:hover:not(:disabled) { background: #a8213a; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,26,43,0.25); }
-  .ad-upload-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  /* Photo grid panel */
-  .ad-photo-panel {
-    background: #fff; border: 1px solid rgba(201,151,58,0.18); border-radius: 4px; overflow: hidden;
+  .ad-cat-btn {
+    padding: 0.46rem 1rem;
+    border: 1.5px solid var(--gold);
+    background: var(--white);
+    color: var(--text-mid);
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.18s;
   }
-  .ad-photo-panel-head {
-    padding: 1.2rem 1.6rem; border-bottom: 1px solid rgba(201,151,58,0.15);
-    background: linear-gradient(to right, #fdf6ee, #fff);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .ad-photo-panel-head h3 {
-    font-family: 'Cinzel', serif; font-size: 0.82rem; font-weight: 500;
-    color: #6b1020; letter-spacing: 0.06em; text-transform: uppercase;
-  }
-  .ad-photo-panel-head span { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.14em; color: #9c7b6e; }
+  .ad-cat-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+  .ad-cat-btn.active { background: var(--crimson-dark); border-color: var(--crimson-dark); color: var(--white); }
 
   .ad-photo-grid {
-    padding: 1.4rem 1.6rem;
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 0.8rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--gold);
   }
-  .ad-photo-item {
-    position: relative; aspect-ratio: 3/4;
-    overflow: hidden; border-radius: 3px; border: 1px solid rgba(201,151,58,0.2);
+  .ad-photo-card {
+    position: relative;
+    border-right: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+    overflow: hidden;
   }
-  .ad-photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s ease, filter 0.45s ease; }
-  .ad-photo-item:hover img { transform: scale(1.07); filter: brightness(0.65); }
-  .ad-photo-item-overlay {
-    position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 0.75rem; background: linear-gradient(to top, rgba(10,3,5,0.78) 0%, transparent 52%);
-    opacity: 0; transition: opacity 0.32s ease;
+  .ad-photo-card:nth-child(3n) { border-right: none; }
+  .ad-photo-thumb {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease, filter 0.4s ease;
   }
-  .ad-photo-item:hover .ad-photo-item-overlay { opacity: 1; }
-  .ad-photo-item-cat { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.16em; color: rgba(201,151,58,0.85); text-transform: uppercase; margin-bottom: 0.22rem; }
-  .ad-photo-item-title { font-size: 0.72rem; color: rgba(255,255,255,0.92); line-height: 1.3; margin-bottom: 0.4rem; font-style: italic; }
-  .ad-photo-delete {
-    padding: 0.24rem 0.65rem; background: rgba(139,26,43,0.88); color: #fff;
-    border: none; border-radius: 2px; font-family: 'Cinzel', serif;
-    font-size: 0.52rem; letter-spacing: 0.14em; cursor: pointer; align-self: flex-start;
-    transition: background 0.2s ease;
+  .ad-photo-card:hover .ad-photo-thumb {
+    transform: scale(1.04);
+    filter: brightness(0.7);
   }
-  .ad-photo-delete:hover { background: #8b1a2b; }
+  .ad-photo-info {
+    padding: 0.75rem 0.9rem;
+    background: var(--white);
+    border-top: 1px solid var(--gold-pale);
+  }
+  .ad-photo-title { font-size: 1rem; color: var(--text-dark); font-weight: 500; }
+  .ad-photo-cat {
+    font-family: 'Cinzel', serif;
+    font-size: 0.52rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-top: 0.18rem;
+  }
+  .ad-photo-delete-overlay {
+    position: absolute;
+    top: 0.6rem; right: 0.6rem;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .ad-photo-card:hover .ad-photo-delete-overlay { opacity: 1; }
+  .ad-photo-del-btn {
+    padding: 0.3rem 0.7rem;
+    border: none;
+    background: var(--crimson);
+    color: var(--white);
+    font-family: 'Cinzel', serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+  }
   .ad-featured-badge {
-    position: absolute; top: 0.45rem; right: 0.45rem;
-    padding: 0.18rem 0.55rem; background: rgba(201,151,58,0.92); color: #fff;
-    font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.14em; border-radius: 2px;
+    position: absolute;
+    top: 0.55rem; left: 0.55rem;
+    padding: 0.18rem 0.55rem;
+    background: var(--gold);
+    color: var(--white);
+    font-family: 'Cinzel', serif;
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 
-  /* ── ANIMATIONS ── */
-  @keyframes adFadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes adFadeUp   { from { opacity: 0; transform: translateY(20px);  } to { opacity: 1; transform: translateY(0); } }
-  @keyframes adPulse    { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
-  @keyframes adSpin     { to { transform: rotate(360deg); } }
-  .ad-spinner { width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: adSpin 0.7s linear infinite; }
+  /* ── Upload modal overlay ── */
+  .ad-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--crimson-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 1.5rem;
+  }
+  .ad-modal {
+    background: var(--white);
+    border: 1px solid var(--gold);
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: adIn 0.22s ease both;
+  }
+  .ad-modal-head {
+    padding: 1.3rem 1.6rem;
+    border-bottom: 1px solid var(--gold-pale);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ad-modal-head h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dark);
+  }
+  .ad-modal-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: color 0.18s;
+  }
+  .ad-modal-close:hover { color: var(--crimson); }
+  .ad-modal-body {
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .ad-field { display: flex; flex-direction: column; gap: 0.32rem; }
+  .ad-field label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--crimson);
+  }
+  .ad-field input[type="text"],
+  .ad-field input[type="file"],
+  .ad-field select {
+    width: 100%;
+    padding: 0.55rem 0.85rem;
+    border: 1.5px solid var(--gold);
+    background: var(--cream);
+    color: var(--text-dark);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.82rem;
+    outline: none;
+    transition: border-color 0.22s, box-shadow 0.22s;
+    appearance: none;
+  }
+  .ad-field input:focus, .ad-field select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-pale);
+    background: var(--white);
+  }
+  .ad-field input[type="file"] { padding: 0.4rem 0.75rem; font-size: 0.72rem; cursor: pointer; }
+  .ad-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .ad-checkbox-row {
+    display: flex; align-items: center; gap: 0.55rem; cursor: pointer;
+  }
+  .ad-checkbox-row input { accent-color: var(--crimson); width: 15px; height: 15px; cursor: pointer; }
+  .ad-checkbox-row span { color: var(--text-mid); font-size: 0.88rem; }
+  .ad-form-msg {
+    padding: 0.55rem 0.9rem;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    border: 1px solid;
+  }
+  .ad-form-msg--error { border-color: var(--crimson); background: var(--gold-pale); color: var(--crimson); }
+  .ad-form-msg--success { border-color: var(--gold); background: var(--cream); color: var(--text-dark); }
+  .ad-upload-btn {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    background: var(--crimson-dark);
+    color: var(--white);
+    font-family: 'Cinzel', serif;
+    font-size: 0.56rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .ad-upload-btn:hover:not(:disabled) { background: var(--crimson); }
+  .ad-upload-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 1100px) { .ad-gallery-layout { grid-template-columns: 300px 1fr; } }
+  @keyframes adSpin { to { transform: rotate(360deg); } }
+  .ad-spinner {
+    width: 12px; height: 12px;
+    border: 2px solid var(--gold-pale);
+    border-top-color: var(--white);
+    border-radius: 50%;
+    animation: adSpin 0.7s linear infinite;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1100px) {
+    .ad-photos-stats { grid-template-columns: repeat(3,1fr); }
+    .ad-photos-stat:nth-child(3) { border-right: none; }
+    .ad-photos-stat:nth-child(4),
+    .ad-photos-stat:nth-child(5),
+    .ad-photos-stat:nth-child(6) { border-top: 1px solid var(--gold); }
+  }
   @media (max-width: 900px) {
-    .ad-gallery-layout { grid-template-columns: 1fr; }
-    .ad-upload-card { position: static; }
-    .ad-hero-images { display: none; }
-    .ad-hero-inner { grid-template-columns: 1fr; }
+    .ad-shell { grid-template-columns: 1fr; }
+    .ad-sidebar { position: static; min-height: auto; padding: 1.2rem 1rem; }
+    .ad-sidebar-nav { flex-direction: row; flex-wrap: wrap; }
+    .ad-main { padding: 1.5rem; }
+    .ad-stats { grid-template-columns: repeat(2,1fr); }
+    .ad-stat:nth-child(2) { border-right: none; }
+    .ad-stat:nth-child(3), .ad-stat:nth-child(4) { border-top: 1px solid var(--gold); }
+    .ad-detail-layout { grid-template-columns: 1fr; }
+    .ad-photo-grid { grid-template-columns: repeat(2,1fr); }
+    .ad-photo-card:nth-child(3n) { border-right: 1px solid var(--gold); }
+    .ad-photo-card:nth-child(2n) { border-right: none; }
   }
-  @media (max-width: 768px) {
-    .ad-topbar { padding: 0.7rem 1.2rem; }
-    .ad-hero { padding: 2rem 1.4rem 2.2rem; }
-    .ad-stats { grid-template-columns: 1fr; }
-    .ad-stat { border-right: none; border-bottom: 1px solid rgba(201,151,58,0.2); padding: 1rem 1.4rem; }
-    .ad-tab-nav { padding: 0 1.2rem; }
-    .ad-tab { padding: 0.85rem 1rem 0.8rem; font-size: 0.65rem; }
-    .ad-page { padding: 1.6rem 1.2rem 3rem; }
-    .ad-form-row { grid-template-columns: 1fr; }
-    .ad-photo-grid { grid-template-columns: repeat(2, 1fr); padding: 1rem; }
-    .ad-queries-wrap { max-width: 100%; }
-    .ad-topbar-text span { display: none; }
-  }
-  @media (max-width: 480px) {
-    .ad-tab { letter-spacing: 0.08em; padding: 0.8rem 0.75rem; }
-    .ad-photo-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+  @media (max-width: 600px) {
+    .ad-table-head { display: none; }
+    .ad-table-row { grid-template-columns: 1fr; }
+    .ad-main { padding: 1rem; }
+    .ad-photo-grid { grid-template-columns: 1fr; }
+    .ad-photo-card:nth-child(n) { border-right: none; }
+    .ad-photos-stats { grid-template-columns: repeat(2,1fr); }
   }
 `
 
-const defaultPhotoForm = { title: '', category: 'Performance', altText: '', featured: false, photo: null }
-const FILTERS = ['all', 'new', 'read', 'replied']
+const defaultPhotoForm = {
+  photo: null,
+}
+
+function formatDate(value) {
+  if (!value) return '-'
+  try {
+    return new Date(value).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      weekday: 'long',
+    })
+  } catch { return '-' }
+}
+
+function formatShortDate(value) {
+  if (!value) return '-'
+  try {
+    return new Date(value).toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    })
+  } catch { return '-' }
+}
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
@@ -431,7 +762,8 @@ export default function AdminDashboard() {
 
   const [activePage, setActivePage] = useState('queries')
   const [pageKey, setPageKey] = useState(0)
-  const [queryFilter, setQueryFilter] = useState('all')
+  const [selectedQuery, setSelectedQuery] = useState(null)
+  const [showUploadModal, setShowUploadModal] = useState(false)
 
   const [queries, setQueries] = useState([])
   const [photos, setPhotos] = useState([])
@@ -440,11 +772,9 @@ export default function AdminDashboard() {
   const [photoForm, setPhotoForm] = useState(defaultPhotoForm)
   const [photoStatus, setPhotoStatus] = useState({ loading: false, error: '', success: '' })
 
-  const unreadCount = useMemo(() => queries.filter((q) => q.status === 'new').length, [queries])
-  const filteredQueries = useMemo(
-    () => queryFilter === 'all' ? queries : queries.filter((q) => q.status === queryFilter),
-    [queries, queryFilter]
-  )
+  const unreadCount = useMemo(() => queries.filter(q => q.status === 'new').length, [queries])
+  const readCount = useMemo(() => queries.filter(q => q.status === 'read').length, [queries])
+  const repliedCount = useMemo(() => queries.filter(q => q.status === 'replied').length, [queries])
 
   useEffect(() => {
     if (!token) return
@@ -452,15 +782,24 @@ export default function AdminDashboard() {
     async function load() {
       try {
         const headers = getAuthHeaders()
-        const [qData, pData] = await Promise.all([apiFetch('/api/queries', { headers }), apiFetch('/api/photos')])
+        const [qData, pData] = await Promise.all([
+          apiFetch('/api/queries', { headers }),
+          apiFetch('/api/photos'),
+        ])
         if (ignore) return
-        setQueries(qData); setPhotos(pData)
+        setQueries(Array.isArray(qData) ? qData : [])
+        setPhotos(Array.isArray(pData) ? pData : [])
       } catch (err) {
         if (!ignore) {
           setError(err.message || 'Unable to load admin data')
-          if ((err.message || '').toLowerCase().includes('token')) { clearAuthToken(); navigate('/admin/login', { replace: true }) }
+          if ((err.message || '').toLowerCase().includes('token')) {
+            clearAuthToken()
+            navigate('/admin/login', { replace: true })
+          }
         }
-      } finally { if (!ignore) setLoading(false) }
+      } finally {
+        if (!ignore) setLoading(false)
+      }
     }
     load()
     return () => { ignore = true }
@@ -472,254 +811,329 @@ export default function AdminDashboard() {
 
   const updateQueryStatus = async (id, status) => {
     try {
-      const updated = await apiFetch(`/api/queries/${id}/status`, { method: 'PATCH', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) })
-      setQueries((c) => c.map((q) => (q._id === id ? updated : q)))
+      const updated = await apiFetch(`/api/queries/${id}/status`, {
+        method: 'PATCH',
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      })
+      setQueries(cur => cur.map(q => q._id === id ? updated : q))
+      if (selectedQuery && selectedQuery._id === id) setSelectedQuery(updated)
     } catch (err) { setError(err.message || 'Unable to update') }
   }
 
   const deleteQuery = async (id) => {
     try {
       await apiFetch(`/api/queries/${id}`, { method: 'DELETE', headers: getAuthHeaders() })
-      setQueries((c) => c.filter((q) => q._id !== id))
+      setQueries(cur => cur.filter(q => q._id !== id))
+      if (selectedQuery && selectedQuery._id === id) setSelectedQuery(null)
     } catch (err) { setError(err.message || 'Unable to delete') }
   }
 
   const handlePhotoChange = ({ target }) => {
-    const { name, value, type, checked, files } = target
-    setPhotoForm((c) => ({ ...c, [name]: type === 'checkbox' ? checked : files ? files[0] || null : value }))
+    const { name, files } = target
+    setPhotoForm(cur => ({
+      ...cur,
+      [name]: files ? files[0] || null : null,
+    }))
   }
 
   const handlePhotoSubmit = async (e) => {
     e.preventDefault()
     setPhotoStatus({ loading: true, error: '', success: '' })
-    if (!photoForm.photo) { setPhotoStatus({ loading: false, error: 'Please choose an image.', success: '' }); return }
+    if (!photoForm.photo) {
+      setPhotoStatus({ loading: false, error: 'Please choose an image.', success: '' })
+      return
+    }
     try {
-      const fd = new FormData()
-      fd.append('title', photoForm.title); fd.append('category', photoForm.category)
-      fd.append('altText', photoForm.altText); fd.append('featured', String(photoForm.featured)); fd.append('photo', photoForm.photo)
-      const created = await apiFetch('/api/photos', { method: 'POST', headers: getAuthHeaders(), body: fd })
-      setPhotos((c) => [created, ...c]); setPhotoForm(defaultPhotoForm)
+      const fallbackTitle = photoForm.photo.name.replace(/\.[^.]+$/, '') || 'Gallery Image'
+      const formData = new FormData()
+      formData.append('title', fallbackTitle)
+      formData.append('category', 'Gallery')
+      formData.append('altText', fallbackTitle)
+      formData.append('featured', 'false')
+      formData.append('photo', photoForm.photo)
+      const created = await apiFetch('/api/photos', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: formData,
+      })
+      setPhotos(cur => [created, ...cur])
+      setPhotoForm(defaultPhotoForm)
       setPhotoStatus({ loading: false, error: '', success: 'Image uploaded successfully.' })
-    } catch (err) { setPhotoStatus({ loading: false, error: err.message || 'Upload failed', success: '' }) }
+      setTimeout(() => { setShowUploadModal(false); setPhotoStatus({ loading: false, error: '', success: '' }) }, 1400)
+    } catch (err) {
+      setPhotoStatus({ loading: false, error: err.message || 'Upload failed', success: '' })
+    }
   }
 
   const deletePhoto = async (id) => {
     try {
       await apiFetch(`/api/photos/${id}`, { method: 'DELETE', headers: getAuthHeaders() })
-      setPhotos((c) => c.filter((p) => p._id !== id))
+      setPhotos(cur => cur.filter(p => p._id !== id))
     } catch (err) { setError(err.message || 'Unable to delete') }
   }
 
   const switchPage = (page) => {
-    if (page === activePage) return
-    setActivePage(page); setPageKey((k) => k + 1)
+    if (page === activePage && !selectedQuery) return
+    setSelectedQuery(null)
+    setActivePage(page)
+    setPageKey(k => k + 1)
   }
 
   return (
     <>
       <style>{styles}</style>
       <div className="ad-shell">
-
-        {/* TOPBAR */}
-        <header className="ad-topbar">
-          <div className="ad-topbar-brand">
-            <img src={siteAssets.logo} alt="Logo" className="ad-topbar-logo" />
-            <div className="ad-topbar-text">
-              <h1>Admin Dashboard</h1>
-              <span>Shanthala Nritya Angala</span>
+        {/* ── Sidebar ── */}
+        <aside className="ad-sidebar">
+          <div className="ad-sidebar-brand">
+            <img src={siteAssets.logo} alt="logo" className="ad-sidebar-logo" />
+            <div>
+              <div className="ad-sidebar-brand-name">Shanthala Nritya Angala</div>
             </div>
           </div>
-          <div className="ad-topbar-right">
-            {unreadCount > 0 && (
-              <span className="ad-unread-pill"><span className="ad-unread-dot" />{unreadCount} unread</span>
-            )}
-            <button className="ad-logout-btn" type="button" onClick={handleLogout}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
+
+          <p className="ad-sidebar-section-label">Management</p>
+          <nav className="ad-sidebar-nav">
+            <button
+              className={`ad-nav-btn ${activePage === 'queries' ? 'active' : ''}`}
+              type="button"
+              onClick={() => switchPage('queries')}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              Queries
+            </button>
+            <button
+              className={`ad-nav-btn ${activePage === 'photos' ? 'active' : ''}`}
+              type="button"
+              onClick={() => switchPage('photos')}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15 16 10 5 21" />
+              </svg>
+              Photos
+            </button>
+          </nav>
+
+          <div className="ad-sidebar-footer">
+            <Link to="/" className="ad-side-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 11 12 3l9 8M5 10v10h14V10" />
+              </svg>
+              View Website
+            </Link>
+            <button className="ad-side-logout" type="button" onClick={handleLogout}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
               </svg>
               Logout
             </button>
           </div>
-        </header>
+        </aside>
 
-        {/* HERO */}
-        <div className="ad-hero">
-          <div className="ad-hero-inner">
-            <div>
-              <p className="ad-hero-eyebrow">Dashboard Overview</p>
-              <h2 className="ad-hero-heading">Keep every enquiry warm, every image curated,<br />and every update <em>stage-ready.</em></h2>
-              <p className="ad-hero-sub">Classical, expressive, and image-led — the same identity as the public site.</p>
-            </div>
-            <div className="ad-hero-images">
-              <img src={siteAssets.groupStage} alt="Stage" className="ad-hero-img-main" />
-              <img src={siteAssets.guruPortrait} alt="Guru" className="ad-hero-img-accent" />
-            </div>
-          </div>
-        </div>
+        {/* ── Main ── */}
+        <main className="ad-main">
+          <div className="ad-page" key={pageKey}>
+            {error ? <p className="ad-global-error">{error}</p> : null}
+            {loading ? <p className="ad-loading">Loading…</p> : null}
 
-        {/* STATS */}
-        <div className="ad-stats">
-          <div className="ad-stat">
-            <p className="ad-stat-label">Total Queries</p>
-            <p className="ad-stat-value">{loading ? '—' : queries.length}</p>
-            <p className="ad-stat-sub">Contact form submissions</p>
-          </div>
-          <div className="ad-stat">
-            <p className="ad-stat-label">Unread Queries</p>
-            <p className="ad-stat-value" style={{ color: unreadCount > 0 ? '#8b1a2b' : '#6b1020' }}>{loading ? '—' : unreadCount}</p>
-            <p className="ad-stat-sub">Awaiting your response</p>
-          </div>
-          <div className="ad-stat">
-            <p className="ad-stat-label">Gallery Images</p>
-            <p className="ad-stat-value">{loading ? '—' : photos.length}</p>
-            <p className="ad-stat-sub">Published to public gallery</p>
-          </div>
-        </div>
-
-        {/* TAB NAV */}
-        <nav className="ad-tab-nav">
-          <button className={`ad-tab ${activePage === 'queries' ? 'active' : ''}`} onClick={() => switchPage('queries')} type="button">
-            <svg className="ad-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-            Queries
-            {queries.length > 0 && <span className="ad-tab-count">{queries.length}</span>}
-          </button>
-          <button className={`ad-tab ${activePage === 'gallery' ? 'active' : ''}`} onClick={() => switchPage('gallery')} type="button">
-            <svg className="ad-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
-            </svg>
-            Gallery
-            {photos.length > 0 && <span className="ad-tab-count">{photos.length}</span>}
-          </button>
-        </nav>
-
-        {/* PAGES */}
-        <div key={pageKey}>
-          {loading && <p className="ad-loading">Loading admin data…</p>}
-          {error  && <p className="ad-global-error" style={{ margin: '1.5rem 2.8rem 0' }}>{error}</p>}
-
-          {/* ── PAGE 1: QUERIES ── */}
-          {activePage === 'queries' && !loading && (
-            <div className="ad-page">
-              <div className="ad-queries-wrap">
-                <div className="ad-panel">
-                  <div className="ad-panel-head">
-                    <div>
-                      <h2>Frontend Queries</h2>
-                      <p>{filteredQueries.length} of {queries.length} messages shown</p>
-                    </div>
-                    {unreadCount > 0 && <span className="ad-panel-badge">{unreadCount} new</span>}
-                  </div>
-                  <div className="ad-filter-bar">
-                    <span className="ad-filter-label">Filter:</span>
-                    {FILTERS.map((f) => (
-                      <button key={f} type="button" className={`ad-filter-btn ${queryFilter === f ? 'active' : ''}`} onClick={() => setQueryFilter(f)}>{f}</button>
-                    ))}
-                  </div>
-                  <div className="ad-query-list">
-                    {filteredQueries.length === 0 && (
-                      <p className="ad-empty">{queryFilter === 'all' ? 'No queries yet.' : `No ${queryFilter} queries found.`}</p>
-                    )}
-                    {filteredQueries.map((query) => (
-                      <article key={query._id} className="ad-query-card">
-                        <div className="ad-query-top">
-                          <div>
-                            <p className="ad-query-name">{query.name}</p>
-                            <p className="ad-query-contact">{query.email}{query.phone ? ` · ${query.phone}` : ''}</p>
-                          </div>
-                          <span className={`ad-badge ad-badge--${query.status}`}>{query.status}</span>
-                        </div>
-                        <p className="ad-query-msg">{query.message}</p>
-                        <p className="ad-query-date">{new Date(query.createdAt).toLocaleString()}</p>
-                        <div className="ad-query-actions">
-                          <button className="ad-action-btn" type="button" onClick={() => updateQueryStatus(query._id, 'read')}>Mark Read</button>
-                          <button className="ad-action-btn" type="button" onClick={() => updateQueryStatus(query._id, 'replied')}>Mark Replied</button>
-                          <button className="ad-action-btn ad-action-btn--danger" type="button" onClick={() => deleteQuery(query._id)}>Delete</button>
-                        </div>
-                      </article>
-                    ))}
+            {/* ── Queries list ── */}
+            {!loading && activePage === 'queries' && !selectedQuery ? (
+              <>
+                <div className="ad-page-header">
+                  <div>
+                    <h2>Queries</h2>
+                    <p>Manage client inquiries and bookings</p>
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
 
-          {/* ── PAGE 2: GALLERY ── */}
-          {activePage === 'gallery' && !loading && (
-            <div className="ad-page">
-              <div className="ad-gallery-layout">
-
-                {/* Left: upload form */}
-                <div className="ad-upload-card">
-                  <div className="ad-gallery-preview">
-                    <img src={siteAssets.redBlack} alt="Dance still" />
-                    <div className="ad-gallery-preview-overlay" />
-                    <span className="ad-gallery-preview-label">Upload New Image</span>
+                <div className="ad-stats">
+                  <div className="ad-stat active">
+                    <div className="ad-stat-value">{queries.length}</div>
+                    <div className="ad-stat-label">All</div>
                   </div>
-                  <div className="ad-panel-head">
-                    <div><h2>Gallery Uploads</h2><p>Add images to the public gallery</p></div>
+                  <div className="ad-stat">
+                    <div className="ad-stat-value">{unreadCount}</div>
+                    <div className="ad-stat-label">New</div>
                   </div>
-                  <form className="ad-form" onSubmit={handlePhotoSubmit}>
-                    <div className="ad-form-row">
-                      <div className="ad-field">
-                        <label>Title</label>
-                        <input type="text" name="title" value={photoForm.title} onChange={handlePhotoChange} placeholder="Photo title" required />
-                      </div>
-                      <div className="ad-field">
-                        <label>Category</label>
-                        <input type="text" name="category" value={photoForm.category} onChange={handlePhotoChange} placeholder="e.g. Performance" required />
-                      </div>
-                    </div>
-                    <div className="ad-field">
-                      <label>Alt Text</label>
-                      <input type="text" name="altText" value={photoForm.altText} onChange={handlePhotoChange} placeholder="Describe for accessibility" />
-                    </div>
-                    <div className="ad-field">
-                      <label>Image File</label>
-                      <input type="file" name="photo" accept="image/*" onChange={handlePhotoChange} required />
-                    </div>
-                    <label className="ad-checkbox-row">
-                      <input type="checkbox" name="featured" checked={photoForm.featured} onChange={handlePhotoChange} />
-                      <span>Mark as featured on homepage</span>
-                    </label>
-                    {photoStatus.error   && <p className="ad-form-msg ad-form-msg--error">{photoStatus.error}</p>}
-                    {photoStatus.success && <p className="ad-form-msg ad-form-msg--success">{photoStatus.success}</p>}
-                    <button className="ad-upload-btn" type="submit" disabled={photoStatus.loading}>
-                      {photoStatus.loading && <span className="ad-spinner" />}
-                      {photoStatus.loading ? 'Uploading…' : 'Upload to Gallery'}
-                    </button>
-                  </form>
+                  <div className="ad-stat">
+                    <div className="ad-stat-value">{readCount}</div>
+                    <div className="ad-stat-label">Read</div>
+                  </div>
+                  <div className="ad-stat">
+                    <div className="ad-stat-value">{repliedCount}</div>
+                    <div className="ad-stat-label">Replied</div>
+                  </div>
                 </div>
 
-                {/* Right: photo grid */}
-                <div className="ad-photo-panel">
-                  <div className="ad-photo-panel-head">
-                    <h3>Published Images</h3>
-                    <span>{photos.length} image{photos.length !== 1 ? 's' : ''}</span>
+                {queries.length === 0 ? (
+                  <p className="ad-empty">No queries yet.</p>
+                ) : (
+                  <div className="ad-table-wrap">
+                    <div className="ad-table-head">
+                      <span className="ad-th">Name</span>
+                      <span className="ad-th">Status</span>
+                      <span className="ad-th">Received</span>
+                    </div>
+                    {queries.map(q => (
+                      <div key={q._id} className="ad-table-row" onClick={() => setSelectedQuery(q)}>
+                        <div className="ad-td ad-td-name">{q.name}</div>
+                        <div className="ad-td">
+                          <span className={`ad-badge ad-badge--${q.status}`}>{q.status}</span>
+                        </div>
+                        <div className="ad-td">{formatShortDate(q.createdAt)}</div>
+                      </div>
+                    ))}
                   </div>
+                )}
+              </>
+            ) : null}
+
+            {/* ── Query detail ── */}
+            {!loading && activePage === 'queries' && selectedQuery ? (
+              <>
+                <div className="ad-detail-topbar">
+                  <button className="ad-back-btn" type="button" onClick={() => setSelectedQuery(null)}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back to Queries
+                  </button>
+                  <div className="ad-detail-topbar-actions">
+                    {selectedQuery.status !== 'read' ? (
+                      <button className="ad-topbar-btn" type="button" onClick={() => updateQueryStatus(selectedQuery._id, 'read')}>Read</button>
+                    ) : null}
+                    <button className="ad-topbar-btn ad-topbar-btn--danger" type="button" onClick={() => deleteQuery(selectedQuery._id)}>Delete</button>
+                  </div>
+                </div>
+
+                <div className="ad-detail-layout">
+                  <div className="ad-detail-card">
+                    <h2 className="ad-detail-client-name">{selectedQuery.name}</h2>
+                    <p className="ad-detail-date-label">{formatDate(selectedQuery.createdAt)}</p>
+
+                    <div className="ad-detail-grid">
+                      <div className="ad-detail-field">
+                        <label>Email</label>
+                        <p><a href={`mailto:${selectedQuery.email}`}>{selectedQuery.email}</a></p>
+                      </div>
+                      <div className="ad-detail-field">
+                        <label>Phone</label>
+                        <p>{selectedQuery.phone || '-'}</p>
+                      </div>
+                    </div>
+
+                    <p className="ad-msg-label">Message</p>
+                    <div className="ad-msg-box">{selectedQuery.message || <em style={{ color: 'var(--text-light)' }}>No message provided.</em>}</div>
+                  </div>
+
+                  <div className="ad-detail-sidebar">
+                    <div className="ad-side-panel">
+                      <p className="ad-side-panel-label">Quick Actions</p>
+                      <button className="ad-quick-action-btn" type="button" onClick={() => window.open(`mailto:${selectedQuery.email}`)}>Reply via Email</button>
+                      {selectedQuery.phone ? (
+                        <button className="ad-quick-action-btn" type="button" onClick={() => window.open(`tel:${selectedQuery.phone}`)}>Call Client</button>
+                      ) : (
+                        <button className="ad-quick-action-btn" type="button" style={{ opacity: 0.4, cursor: 'default' }}>Call Client</button>
+                      )}
+                      <button
+                        className="ad-quick-action-btn ad-quick-action-btn--primary"
+                        type="button"
+                        onClick={() => updateQueryStatus(selectedQuery._id, 'replied')}
+                      >
+                        Mark as Replied
+                      </button>
+                    </div>
+
+                    <div className="ad-side-panel">
+                      <p className="ad-side-panel-label">Status Timeline</p>
+                      <div className="ad-timeline">
+                        <div className="ad-timeline-item">
+                          <span className="ad-timeline-dot done" />
+                          <span>Query Received</span>
+                        </div>
+                        <div className={`ad-timeline-item ${selectedQuery.status === 'new' ? 'pending' : ''}`}>
+                          <span className={`ad-timeline-dot ${selectedQuery.status !== 'new' ? 'done' : 'pending'}`} />
+                          <span>Query Reviewed</span>
+                        </div>
+                        <div className={`ad-timeline-item ${selectedQuery.status !== 'replied' ? 'pending' : ''}`}>
+                          <span className={`ad-timeline-dot ${selectedQuery.status === 'replied' ? 'done' : 'pending'}`} />
+                          <span>Replied to Client</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : null}
+
+            {/* ── Photos page ── */}
+            {!loading && activePage === 'photos' ? (
+              <>
+                <div className="ad-page-header">
+                  <div>
+                    <h2>Photos</h2>
+                    <p>Manage your gallery images</p>
+                  </div>
+                  <button className="ad-header-action" type="button" onClick={() => { setShowUploadModal(true); setPhotoStatus({ loading: false, error: '', success: '' }) }}>
+                    + Upload Photo
+                  </button>
+                </div>
+
+                <div className="ad-photos-stats">
+                  <div className="ad-photos-stat">
+                    <div className="ad-photos-stat-value">{photos.length}</div>
+                    <div className="ad-photos-stat-label">Total Photos</div>
+                  </div>
+                </div>
+
+                {photos.length === 0 ? (
+                  <p className="ad-empty">No photos uploaded yet.</p>
+                ) : (
                   <div className="ad-photo-grid">
-                    {photos.length === 0 && <p className="ad-empty" style={{ gridColumn: '1/-1' }}>No images uploaded yet.</p>}
-                    {photos.map((photo) => (
-                      <div key={photo._id} className="ad-photo-item">
-                        <img src={photo.url} alt={photo.altText || photo.title} />
-                        {photo.featured && <span className="ad-featured-badge">Featured</span>}
-                        <div className="ad-photo-item-overlay">
-                          <p className="ad-photo-item-cat">{photo.category}</p>
-                          <p className="ad-photo-item-title">{photo.title}</p>
-                          <button className="ad-photo-delete" type="button" onClick={() => deletePhoto(photo._id)}>Remove</button>
+                    {photos.map(photo => (
+                      <div key={photo._id} className="ad-photo-card">
+                        <img className="ad-photo-thumb" src={photo.url} alt={photo.altText || 'Gallery image'} />
+                        <div className="ad-photo-delete-overlay">
+                          <button className="ad-photo-del-btn" type="button" onClick={() => deletePhoto(photo._id)}>Remove</button>
                         </div>
                       </div>
                     ))}
                   </div>
-                </div>
-
-              </div>
-            </div>
-          )}
-        </div>
-
+                )}
+              </>
+            ) : null}
+          </div>
+        </main>
       </div>
+
+      {/* ── Upload Modal ── */}
+      {showUploadModal ? (
+        <div className="ad-modal-overlay" onClick={e => { if (e.target === e.currentTarget) setShowUploadModal(false) }}>
+          <div className="ad-modal">
+            <div className="ad-modal-head">
+              <h3>Upload Photo</h3>
+              <button className="ad-modal-close" type="button" onClick={() => setShowUploadModal(false)}>×</button>
+            </div>
+            <form className="ad-modal-body" onSubmit={handlePhotoSubmit}>
+              <div className="ad-field">
+                <label>Image File</label>
+                <input type="file" name="photo" accept="image/*" onChange={handlePhotoChange} required />
+              </div>
+              {photoStatus.error ? <p className="ad-form-msg ad-form-msg--error">{photoStatus.error}</p> : null}
+              {photoStatus.success ? <p className="ad-form-msg ad-form-msg--success">{photoStatus.success}</p> : null}
+              <button className="ad-upload-btn" type="submit" disabled={photoStatus.loading}>
+                {photoStatus.loading ? <span className="ad-spinner" /> : null}
+                {photoStatus.loading ? 'Uploading…' : 'Upload to Gallery'}
+              </button>
+            </form>
+          </div>
+        </div>
+      ) : null}
     </>
   )
 }

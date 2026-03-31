@@ -72,6 +72,53 @@ function UniqueIcon({ type }) {
 export default function Home() {
   useScrollReveal()
   const [galleryPreview, setGalleryPreview] = useState([])
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  })
+  const [submitState, setSubmitState] = useState({
+    loading: false,
+    error: '',
+    success: '',
+  })
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target
+    setFormData((current) => ({ ...current, [name]: value }))
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setSubmitState({ loading: true, error: '', success: '' })
+
+    try {
+      await apiFetch('/api/queries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+      })
+      setSubmitState({
+        loading: false,
+        error: '',
+        success: 'Your enquiry has been sent successfully.',
+      })
+    } catch (error) {
+      setSubmitState({
+        loading: false,
+        error: error.message || 'Unable to submit your enquiry right now.',
+        success: '',
+      })
+    }
+  }
 
   useEffect(() => {
     let ignore = false
@@ -240,20 +287,54 @@ export default function Home() {
       <section className="contact-section1">
         <div className="container">
           <div className="divider"><div className="divider-diamond"></div></div>
-          <div className="contact-card reveal">
+          <form className="contact-card reveal" onSubmit={handleSubmit}>
             <h2>Contact Us</h2>
             <div className="form-row">
-              <input className="form-input" type="text" placeholder="Name" />
-              <input className="form-input" type="email" placeholder="Email" />
+              <input
+                className="form-input"
+                type="text"
+                name="name"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+              <input
+                className="form-input"
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="form-stack">
-              <input className="form-input form-input-phone" type="tel" placeholder="Phone Number" />
-              <textarea className="form-input form-input-message" placeholder="Message"></textarea>
+              <input
+                className="form-input form-input-phone"
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+              <textarea
+                className="form-input form-input-message"
+                name="message"
+                placeholder="Message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
             </div>
+            {submitState.error ? <p className="form-feedback form-feedback--error">{submitState.error}</p> : null}
+            {submitState.success ? <p className="form-feedback form-feedback--success">{submitState.success}</p> : null}
             <div className="form-submit">
-              <button className="btn-primary">Submit</button>
+              <button className="btn-primary" type="submit" disabled={submitState.loading}>
+                {submitState.loading ? 'Sending...' : 'Submit'}
+              </button>
             </div>
-          </div>
+          </form>
         </div>
       </section>
     </div>

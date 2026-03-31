@@ -552,12 +552,12 @@ ul { list-style: none; }
 .form-input::placeholder { color: #b38c59; }
 .form-input-phone {
   max-width: calc(50% - 0.8rem);
-  font-family: 'Cinzel', serif;
+  font-family: 'Cinzel';
   letter-spacing: 0.04em;
 }
 .form-input-phone::placeholder,
 .phone-number-text {
-  font-family: 'Cinzel', serif;
+  font-family:var(--font-body);
   letter-spacing: 0.04em;
 }
 .form-input-message {
