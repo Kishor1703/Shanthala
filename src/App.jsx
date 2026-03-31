@@ -8,6 +8,8 @@ import Guru from './pages/Guru'
 import Classes from './pages/Classes'
 import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
+import AdminLogin from './pages/AdminLogin'
+import AdminDashboard from './pages/AdminDashboard'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -16,9 +18,12 @@ function ScrollToTop() {
 }
 
 function Layout() {
+  const location = useLocation()
+  const isAdminPage = location.pathname.startsWith('/admin')
+
   return (
     <>
-      <Navbar />
+      {!isAdminPage ? <Navbar /> : null}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -27,9 +32,11 @@ function Layout() {
           <Route path="/classes" element={<Classes />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </main>
-      <Footer />
+      {!isAdminPage ? <Footer /> : null}
     </>
   )
 }
