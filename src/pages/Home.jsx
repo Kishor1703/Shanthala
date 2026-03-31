@@ -218,7 +218,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="contact-section">
+      <section className="contact-section1">
         <div className="container">
           <div className="divider"><div className="divider-diamond"></div></div>
           <div className="contact-card reveal">
