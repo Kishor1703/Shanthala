@@ -1,26 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
-import { siteAssets } from '../siteAssets'
 import { apiFetch } from '../lib/api'
-
-const galleryImages = [
-  { url: siteAssets.soloRed, title: 'Performance still 1' },
-  { url: siteAssets.sunsetDance, title: 'Performance still 2' },
-  { url: siteAssets.blueCurtain, title: 'Performance still 3' },
-  { url: siteAssets.guruPortrait, title: 'Guru portrait' },
-  { url: siteAssets.groupStage, title: 'Stage performance' },
-  { url: siteAssets.hero, title: 'Hero gallery frame' },
-  { url: siteAssets.redBlack, title: 'Performance still 4' },
-  { url: siteAssets.smileRed, title: 'Performance still 5' },
-  { url: siteAssets.lampPose, title: 'Performance still 6' },
-  { url: siteAssets.groupStack, title: 'Group performance' },
-  { url: siteAssets.multiArms, title: 'Class performance' },
-  { url: siteAssets.hnStage, title: 'Stage moment' },
-]
 
 export default function Gallery() {
   useScrollReveal()
-  const [photos, setPhotos] = useState(galleryImages)
+  const [photos, setPhotos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -32,16 +16,12 @@ export default function Gallery() {
         const data = await apiFetch('/api/photos')
         if (ignore) return
 
-        if (Array.isArray(data) && data.length > 0) {
-          setPhotos(data)
-        } else {
-          setPhotos(galleryImages)
-        }
+        setPhotos(Array.isArray(data) ? data : [])
         setError('')
       } catch (fetchError) {
         if (!ignore) {
-          setPhotos(galleryImages)
-          setError('')
+          setPhotos([])
+          setError(fetchError.message || 'Unable to load gallery images right now.')
         }
       } finally {
         if (!ignore) {
@@ -65,6 +45,9 @@ export default function Gallery() {
           <div className="divider reveal"><div className="divider-diamond"></div></div>
           {loading ? <p className="gallery-status">Loading gallery...</p> : null}
           {error ? <p className="gallery-status gallery-status--error">{error}</p> : null}
+          {!loading && !error && photos.length === 0 ? (
+            <p className="gallery-status">No gallery images have been uploaded yet.</p>
+          ) : null}
           <div className="gallery-masonry reveal">
             {photos.map((photo, i) => (
               <div className="gallery-masonry-item" key={photo._id || photo.url || i}>

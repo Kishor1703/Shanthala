@@ -1,16 +1,9 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { siteAssets } from '../siteAssets'
+import { apiFetch } from '../lib/api'
 import './Home.css'
-
-const DANCE_IMGS = [
-  siteAssets.stageRed,
-  siteAssets.groupStage,
-  siteAssets.soloRed,
-  siteAssets.guruPortrait,
-  siteAssets.duoStage,
-  siteAssets.multiArms,
-]
 
 function ClassIcon({ type }) {
   if (type === 'regular') {
@@ -78,6 +71,30 @@ function UniqueIcon({ type }) {
 
 export default function Home() {
   useScrollReveal()
+  const [galleryPreview, setGalleryPreview] = useState([])
+
+  useEffect(() => {
+    let ignore = false
+
+    async function loadGalleryPreview() {
+      try {
+        const data = await apiFetch('/api/photos')
+        if (!ignore && Array.isArray(data)) {
+          setGalleryPreview(data.slice(0, 5))
+        }
+      } catch {
+        if (!ignore) {
+          setGalleryPreview([])
+        }
+      }
+    }
+
+    loadGalleryPreview()
+
+    return () => {
+      ignore = true
+    }
+  }, [])
 
   return (
     <div className="page-enter">
@@ -198,20 +215,22 @@ export default function Home() {
             <span className="section-tag">Gallery</span>
             <h2 className="section-title" style={{ fontStyle: 'var(--font-body)', textTransform: 'uppercase' }}>A Glimpse Into Our Dance Journey</h2>
           </div>
-          <div className="gallery-grid">
-            {[
-              { cls: 'tall', img: DANCE_IMGS[0] },
-              { cls: '', img: DANCE_IMGS[2] },
-              { cls: '', img: DANCE_IMGS[3] },
-              { cls: '', img: DANCE_IMGS[4] },
-              { cls: 'wide', img: DANCE_IMGS[1] },
-            ].map((item, i) => (
-              <div className={`gallery-item ${item.cls} reveal`} key={i} style={{ transitionDelay: `${i * 0.08}s` }}>
-                <img className="gallery-placeholder" src={item.img} alt={`Dance ${i + 1}`} />
-                <div className="gallery-overlay"></div>
-              </div>
-            ))}
-          </div>
+          {galleryPreview.length > 0 ? (
+            <div className="gallery-grid">
+              {galleryPreview.map((photo, i) => {
+                const cls = i === 0 ? 'tall' : i === 4 ? 'wide' : ''
+
+                return (
+                  <div className={`gallery-item ${cls} reveal`} key={photo._id || photo.url || i} style={{ transitionDelay: `${i * 0.08}s` }}>
+                    <img className="gallery-placeholder" src={photo.url} alt={photo.altText || photo.title || `Dance ${i + 1}`} />
+                    <div className="gallery-overlay"></div>
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <p className="gallery-status">Gallery images will appear here after you upload them from the admin panel.</p>
+          )}
           <div className="gallery-cta reveal">
             <Link to="/gallery" className="btn-outline">View Full Gallery</Link>
           </div>
