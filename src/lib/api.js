@@ -1,22 +1,43 @@
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '')
+const TRANSIENT_DB_ERROR = 'database is not connected'
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 
 export function getApiUrl(path) {
   return `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`
 }
 
 export async function apiFetch(path, options = {}) {
-  const response = await fetch(getApiUrl(path), options)
-  const contentType = response.headers.get('content-type') || ''
-  const data = contentType.includes('application/json')
-    ? await response.json()
-    : await response.text()
+  const method = (options.method || 'GET').toUpperCase()
+  const maxAttempts = method === 'GET' ? 2 : 1
+  let lastError
 
-  if (!response.ok) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    const response = await fetch(getApiUrl(path), options)
+    const contentType = response.headers.get('content-type') || ''
+    const data = contentType.includes('application/json')
+      ? await response.json()
+      : await response.text()
+
+    if (response.ok) {
+      return data
+    }
+
     const message = typeof data === 'string' ? data : data?.message
-    throw new Error(message || 'Request failed')
+    lastError = new Error(message || 'Request failed')
+
+    const isTransientDbError = (message || '').toLowerCase().includes(TRANSIENT_DB_ERROR)
+    if (attempt < maxAttempts && isTransientDbError) {
+      await delay(600)
+      continue
+    }
+
+    throw lastError
   }
 
-  return data
+  throw lastError || new Error('Request failed')
 }
 
 export function getAuthToken() {
