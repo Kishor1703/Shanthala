@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { apiFetch } from '../lib/api'
+import { siteAssets } from '../siteAssets'
 
 export default function Gallery() {
   useScrollReveal()
@@ -40,6 +41,9 @@ export default function Gallery() {
   return (
     <div className="page-enter">
       <section className="gallery-page">
+        <img className="page-bg-design page-bg-design--gallery-left" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
+        <img className="page-bg-design page-bg-design--gallery-center" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
+        <img className="page-bg-design page-bg-design--gallery-right" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
         <div className="container">
           <h1 className="cp-heading" style={{ textAlign: 'center' }}>Gallery</h1>
           <div className="divider reveal"><div className="divider-diamond"></div></div>

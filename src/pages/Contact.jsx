@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { apiFetch } from '../lib/api'
+import { siteAssets } from '../siteAssets'
 
 export default function Contact() {
   useScrollReveal()
@@ -55,6 +56,9 @@ export default function Contact() {
   return (
     <div className="page-enter">
       <section className="contact-section contact-page-section">
+        <img className="page-bg-design page-bg-design--contact-left" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
+        <img className="page-bg-design page-bg-design--contact-center" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
+        <img className="page-bg-design page-bg-design--contact-right" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
         <div className="container">
           <form className="contact-card reveal" onSubmit={handleSubmit}>
             <h2>Contact Us</h2>

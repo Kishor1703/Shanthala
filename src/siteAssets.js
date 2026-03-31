@@ -32,8 +32,10 @@ import RB from './assets/5.png'
 import LS from './assets/6.png'
 import vec from './assets/Vector.png'
 import date from './assets/date-time.png'
+import backgroundDesign from './assets/background_design.png'
 
 export const siteAssets = {
+  backgroundDesign,
   date,
   vec,
   LS,
