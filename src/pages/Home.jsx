@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { siteAssets } from '../siteAssets'
@@ -145,8 +146,9 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="page-enter">
-      <section className="hero" style={{ '--hero-image': `url(${siteAssets.heroFigure})` }}>
+    <>
+      <div className="page-enter">
+        <section className="hero" style={{ '--hero-image': `url(${siteAssets.heroFigure})` }}>
         <img className="hero-ornament hero-ornament-top" src={siteAssets.heroTop} alt="" aria-hidden="true" />
         <img className="hero-ornament hero-ornament-left" src={siteAssets.heroLeft} alt="" aria-hidden="true" />
         <img className="hero-ornament hero-ornament-right" src={siteAssets.heroRight} alt="" aria-hidden="true" />
@@ -298,20 +300,7 @@ export default function Home() {
         </div>
       </section>
 
-      {selectedPhoto ? (
-        <div className="gallery-lightbox" onClick={(event) => { if (event.target === event.currentTarget) setSelectedPhoto(null) }}>
-          <button className="gallery-lightbox-close" type="button" onClick={() => setSelectedPhoto(null)} aria-label="Close image preview">
-            ×
-          </button>
-          <img
-            className="gallery-lightbox-image"
-            src={selectedPhoto.url}
-            alt={selectedPhoto.altText || selectedPhoto.title || 'Gallery preview'}
-          />
-        </div>
-      ) : null}
-
-      <section className="contact-section1">
+        <section className="contact-section1">
         <div className="container">
           <div className="divider"><div className="divider-diamond"></div></div>
           <form className="contact-card reveal" onSubmit={handleSubmit}>
@@ -363,7 +352,22 @@ export default function Home() {
             </div>
           </form>
         </div>
-      </section>
-    </div>
+        </section>
+      </div>
+
+      {selectedPhoto ? createPortal(
+        <div className="gallery-lightbox" onClick={(event) => { if (event.target === event.currentTarget) setSelectedPhoto(null) }}>
+          <button className="gallery-lightbox-close" type="button" onClick={() => setSelectedPhoto(null)} aria-label="Close image preview">
+            ×
+          </button>
+          <img
+            className="gallery-lightbox-image"
+            src={selectedPhoto.url}
+            alt={selectedPhoto.altText || selectedPhoto.title || 'Gallery preview'}
+          />
+        </div>,
+        document.body
+      ) : null}
+    </>
   )
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { apiFetch } from '../lib/api'
 import { siteAssets } from '../siteAssets'
@@ -40,8 +41,9 @@ export default function Gallery() {
   }, [])
 
   return (
-    <div className="page-enter">
-      <section className="gallery-page">
+    <>
+      <div className="page-enter">
+        <section className="gallery-page">
         <img className="page-bg-design page-bg-design--gallery-left" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
         <img className="page-bg-design page-bg-design--gallery-center" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
         <img className="page-bg-design page-bg-design--gallery-right" src={siteAssets.backgroundDesign} alt="" aria-hidden="true" />
@@ -74,9 +76,10 @@ export default function Gallery() {
             ))}
           </div>
         </div>
-      </section>
+        </section>
+      </div>
 
-      {selectedPhoto ? (
+      {selectedPhoto ? createPortal(
         <div className="gallery-lightbox" onClick={(event) => { if (event.target === event.currentTarget) setSelectedPhoto(null) }}>
           <button className="gallery-lightbox-close" type="button" onClick={() => setSelectedPhoto(null)} aria-label="Close image preview">
             ×
@@ -86,8 +89,9 @@ export default function Gallery() {
             src={selectedPhoto.url}
             alt={selectedPhoto.altText || selectedPhoto.title || 'Gallery preview'}
           />
-        </div>
+        </div>,
+        document.body
       ) : null}
-    </div>
+    </>
   )
 }
