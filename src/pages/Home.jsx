@@ -127,7 +127,7 @@ export default function Home() {
       try {
         const data = await apiFetch('/api/photos')
         if (!ignore && Array.isArray(data)) {
-          setGalleryPreview(data.slice(0, 5))
+          setGalleryPreview(data.filter(photo => photo.featured).slice(0, 5))
         }
       } catch {
         if (!ignore) {
@@ -276,7 +276,7 @@ export default function Home() {
               })}
             </div>
           ) : (
-            <p className="gallery-status">Gallery images will appear here after you upload them from the admin panel.</p>
+            <p className="gallery-status">Gallery images</p>
           )}
           <div className="gallery-cta reveal">
             <Link to="/gallery" className="btn-outline">View Full Gallery</Link>

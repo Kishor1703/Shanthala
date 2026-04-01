@@ -444,7 +444,7 @@ const styles = `
     border-color: var(--crimson-dark);
     color: var(--white);
   }
-  .ad-quick-action-btn--primary:hover { background: var(--crimson); border-color: var(--crimson); }
+  .ad-quick-action-btn--primary:hover { background: var(--crimson); border-color: var(--white); color: var(--white); }
 
   .ad-timeline { display: flex; flex-direction: column; gap: 0.75rem; }
   .ad-timeline-item { display: flex; align-items: center; gap: 0.75rem; }
@@ -757,6 +757,7 @@ const styles = `
 
 const defaultPhotoForm = {
   photo: null,
+  featured: false,
 }
 
 function formatDate(value) {
@@ -801,6 +802,7 @@ export default function AdminDashboard() {
   const unreadCount = useMemo(() => queries.filter(q => q.status === 'new').length, [queries])
   const readCount = useMemo(() => queries.filter(q => q.status === 'read').length, [queries])
   const repliedCount = useMemo(() => queries.filter(q => q.status === 'replied').length, [queries])
+  const featuredPhotoCount = useMemo(() => photos.filter(photo => photo.featured).length, [photos])
 
   useEffect(() => {
     if (!token) return
@@ -856,10 +858,10 @@ export default function AdminDashboard() {
   }
 
   const handlePhotoChange = ({ target }) => {
-    const { name, files } = target
+    const { name, files, type, checked } = target
     setPhotoForm(cur => ({
       ...cur,
-      [name]: files ? files[0] || null : null,
+      [name]: type === 'checkbox' ? checked : files ? files[0] || null : null,
     }))
   }
 
@@ -876,7 +878,7 @@ export default function AdminDashboard() {
       formData.append('title', fallbackTitle)
       formData.append('category', 'Gallery')
       formData.append('altText', fallbackTitle)
-      formData.append('featured', 'false')
+      formData.append('featured', String(photoForm.featured))
       formData.append('photo', photoForm.photo)
       const created = await apiFetch('/api/photos', {
         method: 'POST',
@@ -897,6 +899,24 @@ export default function AdminDashboard() {
       await apiFetch(`/api/photos/${id}`, { method: 'DELETE', headers: getAuthHeaders() })
       setPhotos(cur => cur.filter(p => p._id !== id))
     } catch (err) { setError(err.message || 'Unable to delete') }
+  }
+
+  const togglePhotoFeatured = async (photo) => {
+    try {
+      const updated = await apiFetch(`/api/photos/${photo._id}`, {
+        method: 'PATCH',
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: photo.title || photo.altText || 'Gallery Image',
+          category: photo.category || 'Gallery',
+          altText: photo.altText || photo.title || '',
+          featured: !photo.featured,
+        }),
+      })
+      setPhotos(cur => cur.map(item => item._id === photo._id ? updated : item))
+    } catch (err) {
+      setError(err.message || 'Unable to update photo selection')
+    }
   }
 
   const switchPage = (page) => {
@@ -1115,6 +1135,10 @@ export default function AdminDashboard() {
                     <div className="ad-photos-stat-value">{photos.length}</div>
                     <div className="ad-photos-stat-label">Total Photos</div>
                   </div>
+                  <div className="ad-photos-stat">
+                    <div className="ad-photos-stat-value">{featuredPhotoCount}</div>
+                    <div className="ad-photos-stat-label">Home Selected</div>
+                  </div>
                 </div>
 
                 {photos.length === 0 ? (
@@ -1123,8 +1147,12 @@ export default function AdminDashboard() {
                   <div className="ad-photo-grid">
                     {photos.map(photo => (
                       <div key={photo._id} className="ad-photo-card">
+                        {photo.featured ? <span className="ad-featured-badge">Home</span> : null}
                         <img className="ad-photo-thumb" src={photo.url} alt={photo.altText || 'Gallery image'} />
                         <div className="ad-photo-delete-overlay">
+                          <button className="ad-photo-del-btn" type="button" onClick={() => togglePhotoFeatured(photo)}>
+                            {photo.featured ? 'Remove from Home' : 'Show on Home'}
+                          </button>
                           <button className="ad-photo-del-btn" type="button" onClick={() => deletePhoto(photo._id)}>Remove</button>
                         </div>
                       </div>
@@ -1150,6 +1178,10 @@ export default function AdminDashboard() {
                 <label>Image File</label>
                 <input type="file" name="photo" accept="image/*" onChange={handlePhotoChange} required />
               </div>
+              <label className="ad-checkbox-row">
+                <input type="checkbox" name="featured" checked={photoForm.featured} onChange={handlePhotoChange} />
+                <span>Show this image on the Home page gallery</span>
+              </label>
               {photoStatus.error ? <p className="ad-form-msg ad-form-msg--error">{photoStatus.error}</p> : null}
               {photoStatus.success ? <p className="ad-form-msg ad-form-msg--success">{photoStatus.success}</p> : null}
               <button className="ad-upload-btn" type="submit" disabled={photoStatus.loading}>
