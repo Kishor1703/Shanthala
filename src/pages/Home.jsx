@@ -72,6 +72,7 @@ function UniqueIcon({ type }) {
 export default function Home() {
   useScrollReveal()
   const [galleryPreview, setGalleryPreview] = useState([])
+  const [selectedPhoto, setSelectedPhoto] = useState(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -268,7 +269,20 @@ export default function Home() {
                 const cls = i === 0 ? 'tall' : i === 4 ? 'wide' : ''
 
                 return (
-                  <div className={`gallery-item ${cls} reveal`} key={photo._id || photo.url || i} style={{ transitionDelay: `${i * 0.08}s` }}>
+                  <div
+                    className={`gallery-item ${cls} reveal`}
+                    key={photo._id || photo.url || i}
+                    style={{ transitionDelay: `${i * 0.08}s` }}
+                    onClick={() => setSelectedPhoto(photo)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault()
+                        setSelectedPhoto(photo)
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                  >
                     <img className="gallery-placeholder" src={photo.url} alt={photo.altText || photo.title || `Dance ${i + 1}`} />
                     <div className="gallery-overlay"></div>
                   </div>
@@ -283,6 +297,19 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {selectedPhoto ? (
+        <div className="gallery-lightbox" onClick={(event) => { if (event.target === event.currentTarget) setSelectedPhoto(null) }}>
+          <button className="gallery-lightbox-close" type="button" onClick={() => setSelectedPhoto(null)} aria-label="Close image preview">
+            ×
+          </button>
+          <img
+            className="gallery-lightbox-image"
+            src={selectedPhoto.url}
+            alt={selectedPhoto.altText || selectedPhoto.title || 'Gallery preview'}
+          />
+        </div>
+      ) : null}
 
       <section className="contact-section1">
         <div className="container">
