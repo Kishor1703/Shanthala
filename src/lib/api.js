@@ -15,7 +15,16 @@ export async function apiFetch(path, options = {}) {
   let lastError
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    const response = await fetch(getApiUrl(path), options)
+    let response
+
+    try {
+      response = await fetch(getApiUrl(path), options)
+    } catch (error) {
+      const networkError = new Error('Unable to reach the server. Please try again.')
+      networkError.cause = error
+      throw networkError
+    }
+
     const contentType = response.headers.get('content-type') || ''
     const data = contentType.includes('application/json')
       ? await response.json()
@@ -27,6 +36,7 @@ export async function apiFetch(path, options = {}) {
 
     const message = typeof data === 'string' ? data : data?.message
     lastError = new Error(message || 'Request failed')
+    lastError.status = response.status
 
     const isTransientDbError = (message || '').toLowerCase().includes(TRANSIENT_DB_ERROR)
     if (attempt < maxAttempts && isTransientDbError) {

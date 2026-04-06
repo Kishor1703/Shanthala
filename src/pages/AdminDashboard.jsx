@@ -819,8 +819,9 @@ export default function AdminDashboard() {
         setPhotos(Array.isArray(pData) ? pData : [])
       } catch (err) {
         if (!ignore) {
-          setError(err.message || 'Unable to load admin data')
-          if ((err.message || '').toLowerCase().includes('token')) {
+          const isUnauthorized = err.status === 401 || (err.message || '').toLowerCase().includes('token')
+          setError(isUnauthorized ? 'Your admin session has expired. Please log in again.' : (err.message || 'Unable to load admin data'))
+          if (isUnauthorized) {
             clearAuthToken()
             navigate('/admin/login', { replace: true })
           }
@@ -890,6 +891,13 @@ export default function AdminDashboard() {
       setPhotoStatus({ loading: false, error: '', success: 'Image uploaded successfully.' })
       setTimeout(() => { setShowUploadModal(false); setPhotoStatus({ loading: false, error: '', success: '' }) }, 1400)
     } catch (err) {
+      if (err.status === 401) {
+        clearAuthToken()
+        navigate('/admin/login', { replace: true })
+        setPhotoStatus({ loading: false, error: 'Your admin session has expired. Please log in again.', success: '' })
+        return
+      }
+
       setPhotoStatus({ loading: false, error: err.message || 'Upload failed', success: '' })
     }
   }
