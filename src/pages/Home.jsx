@@ -266,30 +266,26 @@ export default function Home() {
             <h2 className="section-title" style={{ fontStyle: 'var(--font-body)', textTransform: 'uppercase' }}>A Glimpse Into Our Dance Journey</h2>
           </div>
           {galleryPreview.length > 0 ? (
-            <div className="gallery-grid">
-              {galleryPreview.map((photo, i) => {
-                const cls = i === 0 ? 'tall' : i === 4 ? 'wide' : ''
-
-                return (
-                  <div
-                    className={`gallery-item ${cls} reveal`}
-                    key={photo._id || photo.url || i}
-                    style={{ transitionDelay: `${i * 0.08}s` }}
-                    onClick={() => setSelectedPhoto(photo)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault()
-                        setSelectedPhoto(photo)
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <img className="gallery-placeholder" src={photo.url} alt={photo.altText || photo.title || `Dance ${i + 1}`} />
-                    <div className="gallery-overlay"></div>
-                  </div>
-                )
-              })}
+            <div className="gallery-masonry reveal">
+              {galleryPreview.map((photo, i) => (
+                <div
+                  className="gallery-masonry-item"
+                  key={photo._id || photo.url || i}
+                  style={{ transitionDelay: `${i * 0.08}s` }}
+                  onClick={() => setSelectedPhoto(photo)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault()
+                      setSelectedPhoto(photo)
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <img src={photo.url} alt={photo.altText || photo.title || `Dance ${i + 1}`} loading="lazy" />
+                  <div className="gallery-overlay"></div>
+                </div>
+              ))}
             </div>
           ) : (
             <p className="gallery-status">Gallery images</p>
