@@ -1091,6 +1091,82 @@ ul { list-style: none; }
 }
 .guru-detail-text h2 { font-family: var(--font-display); font-size: 2.5rem; color: var(--crimson); margin-bottom: 1.5rem; line-height: 1.2; }
 .guru-detail-text p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.9; margin-bottom: 1rem; }
+.guru-story-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+.guru-story-card,
+.guru-appearance-card {
+  background: var(--cream-dark);
+  border: 1px solid rgba(201, 151, 58, 0.22);
+  padding: 2rem;
+}
+.guru-story-card h3 {
+  font-family: var(--font-display);
+  color: var(--crimson);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.guru-story-card p {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  line-height: 1.9;
+  margin-bottom: 0.9rem;
+}
+.guru-story-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.guru-story-list li {
+  position: relative;
+  padding-left: 1.15rem;
+  margin-bottom: 0.95rem;
+  color: var(--text-mid);
+  font-size: 0.88rem;
+  line-height: 1.9;
+}
+.guru-story-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--gold);
+}
+.guru-appearances {
+  margin-bottom: 4rem;
+}
+.guru-appearances-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.guru-appearances-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.guru-appearance-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.guru-appearance-number {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--gold);
+  line-height: 1;
+}
+.guru-appearance-card p {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  line-height: 1.9;
+}
 .guru-achievements {
   border-top: 1px solid var(--gold-pale);
   padding-top: 4rem;
@@ -1906,6 +1982,8 @@ ul { list-style: none; }
   }
   .guru-hero-grid img { height: 320px; }
   .guru-detail-text h2 { font-size: 1.8rem; }
+  .guru-story-grid,
+  .guru-appearances-grid { grid-template-columns: 1fr; }
   .guru-achievements-grid { grid-template-columns: 1fr; gap: 1.2rem; }
 
   /* ── Gallery page ── */
