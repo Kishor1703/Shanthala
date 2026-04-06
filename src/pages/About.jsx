@@ -31,7 +31,7 @@ export default function About() {
 
   return (
     <div className="page-enter">
-      <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.groupStage})` }}>
+      <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.stageRed})` }}>
         <div>
           <h1>About Us</h1>
           <p>A sanctuary where tradition meets grace, and every dancer embarks on a journey of artistic excellence and spiritual growth through the timeless art of Bharatanatyam.</p>
@@ -60,11 +60,10 @@ export default function About() {
       <section className="journey-section">
         <div className="container">
           <div className="journey-grid">
-            <div className="reveal-left unique-copy">
-              <img src={siteAssets.guruPortrait} alt="Journey" />
+            <div className="journey-media reveal-left">
+              <img src={siteAssets.multiArms} alt="Young Bharatanatyam student performing on stage" />
             </div>
             <div className="journey-text reveal-right">
-              <span className="section-tag">Our Story</span>
               <h2>Our Journey</h2>
               <p>Shanthala Nritya Angala was born from a deep passion for Bharatanatyam and a vision to create a space where this magnificent art form could flourish. Founded by Guru Bianca Radhakrishna, the school emerged from years of rigorous training, performance, and a burning desire to pass on this sacred tradition to the next generation.</p>
               <p>What began as a small group of dedicated students has blossomed into a vibrant community of dancers, each contributing their unique voice to the rich tapestry of classical dance. Our journey has been one of continuous learning, growth, and unwavering commitment to excellence.</p>
@@ -136,7 +135,7 @@ export default function About() {
               </ul>
             </div>
             <div className="reveal-right">
-              <img src={siteAssets.lampPose} alt="What makes us unique" style={{ width: '100%', height: '480px', objectFit: 'cover' }} />
+              <img src={siteAssets.unique} alt="What makes us unique" style={{ width: '100%', height: '480px', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
