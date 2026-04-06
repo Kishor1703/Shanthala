@@ -27,7 +27,7 @@ export default function Guru() {
 
   return (
     <div className="page-enter">
-      <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.guruPortrait})` }}>
+      <div className="page-hero page-hero-photo" style={{ '--page-hero-image': `url(${siteAssets.img})` }}>
         <div>
           <h1>About Our Guru</h1>
           <p>A life dedicated to the art of Bharatanatyam, preserving its essence and passing on its grace.</p>
