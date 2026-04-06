@@ -132,7 +132,6 @@ export default function Classes() {
                     {[
                       'Students with at least 5–7 years of regular training and guru approval',
                       'Commitment towards Arangetram preparation',
-                      'Open to students from other institutions',
                     ].map((item, idx) => (
                       <li key={idx}>{item}</li>
                     ))}
