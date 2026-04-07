@@ -178,8 +178,8 @@ ul { list-style: none; }
   position: relative;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 60% 27%, rgba(217, 189, 119, 0.98) 0%, rgba(245, 215, 160, 0.92) 20%, rgba(238, 187, 140, 0.82) 40%, rgba(234, 148, 124, 0.7) 58%, rgba(175, 74, 87, 0.92) 100% ),
-    linear-gradient(90deg, #6A0D1BE3 89%, #C9A04C6E 43%, #521A20C9 79%);
+    radial-gradient(circle at 58% 30%, rgba(244, 220, 163, 0.98) 0%, rgba(239, 199, 141, 0.94) 19%, rgba(195, 136, 94, 0.82) 43%, rgba(196, 93, 85, 0.7) 66%, rgba(133, 44, 60, 0.92) 100%),
+    linear-gradient(103deg, rgba(104, 22, 36, 0.95) 0%, rgba(145, 55, 64, 0.54) 28%, rgba(208, 162, 92, 0.16) 52%, rgba(124, 47, 57, 0.5) 76%, rgba(86, 24, 34, 0.9) 100%);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -191,23 +191,24 @@ ul { list-style: none; }
   inset: 0;
   background-image: var(--hero-image);
   background-repeat: no-repeat;
-  background-position: 77% 100%;
-  background-size: clamp(500px, 39vw, 660px) auto;
+  background-position: 74% 100%;
+  background-size: clamp(380px, 30vw, 500px) auto;
   z-index: 1;
-  opacity: 0.98;
+  opacity: 0.9;
   mix-blend-mode: normal;
   -webkit-mask-image: radial-gradient(circle at 50% 42%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 56%, rgba(0, 0, 0, 0.94) 74%, rgba(0, 0, 0, 0.68) 86%, transparent 96%);
   mask-image: radial-gradient(circle at 50% 42%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 56%, rgba(0, 0, 0, 0.94) 74%, rgba(0, 0, 0, 0.68) 86%, transparent 96%);
-  animation: heroImageIn 1s ease 0.2s both;
+  animation: heroImageIn 1s ease
 }
 .hero::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(116, 28, 44, 0.32) 0%, rgba(116, 28, 44, 0.12) 16%, rgba(255, 248, 238, 0) 36%, rgba(255, 248, 238, 0) 64%, rgba(108, 48, 56, 0.12) 100%),
-    linear-gradient(180deg, rgba(255, 248, 238, 0.06) 0%, rgba(255, 248, 238, 0) 34%, rgba(110, 35, 48, 0.06) 100%);
+    linear-gradient(90deg, rgba(108, 27, 41, 0.34) 0%, rgba(108, 27, 41, 0.18) 18%, rgba(255, 248, 238, 0.02) 38%, rgba(255, 248, 238, 0) 62%, rgba(100, 40, 50, 0.16) 100%),
+    linear-gradient(180deg, rgba(255, 247, 235, 0.08) 0%, rgba(255, 247, 235, 0.02) 26%, rgba(125, 39, 54, 0.04) 68%, rgba(86, 24, 34, 0.08) 100%);
   z-index: 0;
+  
 }
 .hero-content {
   position: relative;
@@ -1885,56 +1886,70 @@ ul { list-style: none; }
   .hero {
     min-height: 100svh;
     align-items: flex-start;
+    background:
+      radial-gradient(circle at 52% 18%, rgba(240, 210, 148, 0.96) 0%, rgba(236, 194, 136, 0.88) 24%, rgba(223, 156, 123, 0.72) 50%, rgba(158, 67, 82, 0.9) 100%),
+      linear-gradient(180deg, rgba(110, 27, 43, 0.88) 0%, rgba(110, 27, 43, 0.24) 34%, rgba(110, 27, 43, 0.52) 100%);
   }
   .hero-content {
     max-width: 100%;
-    padding: 6rem 1.4rem 9rem;
+    padding: 5.8rem 1.4rem 9.5rem;
     position: relative;
+    z-index: 1;
+    text-align: left;
   }
   .hero::before {
-    background-position: center 52%;
-    background-size: clamp(290px, 84vw, 420px) auto;
-    opacity: 0.72;
+    background-position: 78% calc(100% + 0.25rem);
+    background-size: clamp(270px, 78vw, 380px) auto;
+    opacity: 0.74;
+  }
+  .hero::after {
+    background:
+      linear-gradient(180deg, rgba(111, 26, 41, 0.16) 0%, rgba(111, 26, 41, 0.02) 28%, rgba(255, 248, 238, 0) 44%, rgba(107, 29, 44, 0.18) 100%),
+      linear-gradient(90deg, rgba(118, 39, 52, 0.36) 0%, rgba(118, 39, 52, 0.12) 22%, rgba(255, 248, 238, 0) 52%, rgba(108, 48, 56, 0.08) 100%);
   }
   .hero-title {
-    font-size: clamp(2.45rem, 12vw, 3.55rem);
+    font-size: 40px;
     width: auto;
-    max-width: 7ch;
-    line-height: 1.04;
+    max-width: 8.5ch;
+    line-height: 1.08;
+    margin: 0;
   }
   .hero-subtitle {
     font-size: 1rem;
     margin-top: 1rem;
-    max-width: 16ch;
-    line-height: 1.35;
+    max-width: 14ch;
+    line-height: 1.4;
+    margin-left: 0;
   }
   .hero-desc {
     font-size: 0.86rem;
-    max-width: 26ch;
-    line-height: 1.6;
+    max-width: 28ch;
+    line-height: 1.75;
     margin-top: 0.85rem;
+    margin-left: 0;
   }
-  .hero-line     { width: 56px; margin-bottom: 1rem; }
+  .hero-line     { width: 56px; margin: 0 0 1.1rem; }
   .hero-ornament-top {
     display: block;
-    top: -1%;
-    left: 58%;
-    width: 56vw;
-    opacity: 0.34;
+    top: -4%;
+    left: 74%;
+    width: 70vw;
+    opacity: 0.8;
+    transform: translateX(-50%);
   }
   .hero-ornament-left {
-    left: -14%;
-    top: 14%;
-    width: 52vw;
+    left: 0%;
+    top: 40%;
+    width: 70vw;
     height: auto;
-    opacity: 0.18;
+    opacity: 0.9;
   }
   .hero-ornament-right {
-    right: -10%;
-    bottom: 8%;
-    width: 42vw;
+    right: 0%;
+    bottom: 7%;
+    width: 70vw;
     height: auto;
-    opacity: 0.18;
+    opacity: 0.9;
   }
 
   /* ── About strip ── */
