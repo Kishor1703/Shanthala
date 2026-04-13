@@ -543,6 +543,8 @@ ul { list-style: none; }
   transform: scale(1.04);
 }
 
+/* ===== BLOG ===== */
+
 /* ===== CONTACT SECTION ===== */
 .contact-section {
   padding: 1rem 0;
@@ -2047,10 +2049,40 @@ ul { list-style: none; }
 
   /* ── Gallery page ── */
   .gallery-page  { padding: 3rem 0; }
+  .blog-page,
+  .blog-submit-page { padding: 7rem 0 3rem; }
+  .blog-hero-story,
+  .blog-hero,
+  .blog-featured,
+  .blog-submit-layout { grid-template-columns: 1fr; }
+  .blog-hero-copy {
+    max-width: none;
+    padding-left: 0;
+  }
+  .blog-hero-visual {
+    min-height: auto;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .blog-hero-image-main { height: 440px; }
+  .blog-hero-image-accent {
+    right: -0.4rem;
+    bottom: 0.8rem;
+    width: 128px;
+  }
+  .blog-grid { grid-template-columns: 1fr; }
+  .blog-card-thumb { height: 220px; }
+  .blog-featured-content,
+  .blog-submit-card { padding: 1.3rem; }
+  .blog-form-grid { grid-template-columns: 1fr; }
   .gallery-masonry { columns: 2; column-gap: 0.6rem; }
   .page-bg-design--gallery-left { width: 10rem; left: -8%; top: 14%; opacity: 0.5; }
   .page-bg-design--gallery-center { width: 9rem; top: 42%; opacity: 0.5; }
   .page-bg-design--gallery-right { width: 10rem; right: -8%; bottom: 10%; opacity: 0.5; }
+  .page-bg-design--blog-left,
+  .page-bg-design--blog-right,
+  .page-bg-design--blog-submit-left,
+  .page-bg-design--blog-submit-right { width: 8rem; opacity: 0.06; }
 
   /* ── Classes page ── */
   .classes-page { padding: 3.5rem 0 3rem; }
@@ -2199,9 +2231,36 @@ ul { list-style: none; }
   .hero-subtitle  { font-size: 1rem; }
   .nav-brand-text h1 { font-size: 0.95rem; }
   .gallery-grid   { grid-template-columns: 1fr; }
+  .blog-heading,
+  .blog-submit-heading { max-width: none; }
+  .blog-hero-copy .section-tag {
+    padding-left: 0;
+  }
+  .blog-hero-text {
+    max-width: none;
+  }
+  .blog-hero-visual {
+    max-width: 100%;
+  }
+  .blog-hero-image-frame {
+    width: min(100%, 320px);
+    border-radius: 180px 180px 24px 24px;
+  }
+  .blog-hero-image-main { height: 360px; }
+  .blog-hero-image-accent {
+    width: 104px;
+    bottom: 0.4rem;
+  }
+  .blog-hero-card h2 {
+    font-size: 1.9rem;
+  }
   .gallery-masonry { columns: 1; }
   .page-bg-design--gallery-left,
   .page-bg-design--gallery-right,
+  .page-bg-design--blog-left,
+  .page-bg-design--blog-right,
+  .page-bg-design--blog-submit-left,
+  .page-bg-design--blog-submit-right,
   .page-bg-design--contact-left,
   .page-bg-design--contact-right {
     width: 7rem;

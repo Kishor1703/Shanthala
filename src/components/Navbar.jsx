@@ -8,6 +8,7 @@ const navItems = [
   { to: '/guru', label: 'About Guru' },
   { to: '/classes', label: 'Classes' },
   { to: '/gallery', label: 'Gallery' },
+  { to: '/blog', label: 'Blog' },
   { to: '/contact', label: 'Contact' },
 ]
 

@@ -576,6 +576,66 @@ const styles = `
     text-transform: uppercase;
   }
 
+  /* ── Blogs page ── */
+  .ad-blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+  .ad-blog-card {
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid var(--gold);
+  }
+  .ad-blog-thumb {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+  }
+  .ad-blog-body {
+    padding: 1.2rem 1.25rem 1.35rem;
+  }
+  .ad-blog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 0.7rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.48rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+  .ad-blog-title {
+    font-size: 1.3rem;
+    color: var(--text-dark);
+    line-height: 1.1;
+  }
+  .ad-blog-author {
+    margin-top: 0.4rem;
+    color: var(--text-light);
+    font-size: 0.82rem;
+  }
+  .ad-blog-excerpt {
+    margin-top: 0.9rem;
+    color: var(--text-mid);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .ad-blog-footer {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+  .ad-blog-email {
+    color: var(--text-light);
+    font-size: 0.74rem;
+    overflow-wrap: anywhere;
+  }
+
   /* ── Upload modal overlay ── */
   .ad-modal-overlay {
     position: fixed;
@@ -750,6 +810,7 @@ const styles = `
     }
     .ad-main { padding: 1rem; }
     .ad-photo-grid { grid-template-columns: 1fr; }
+    .ad-blog-grid { grid-template-columns: 1fr; }
     .ad-photo-card:nth-child(n) { border-right: none; }
     .ad-photos-stats { grid-template-columns: repeat(2,1fr); }
   }
@@ -794,6 +855,7 @@ export default function AdminDashboard() {
 
   const [queries, setQueries] = useState([])
   const [photos, setPhotos] = useState([])
+  const [blogs, setBlogs] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [photoForm, setPhotoForm] = useState(defaultPhotoForm)
@@ -810,13 +872,15 @@ export default function AdminDashboard() {
     async function load() {
       try {
         const headers = getAuthHeaders()
-        const [qData, pData] = await Promise.all([
+        const [qData, pData, bData] = await Promise.all([
           apiFetch('/api/queries', { headers }),
           apiFetch('/api/photos'),
+          apiFetch('/api/blogs'),
         ])
         if (ignore) return
         setQueries(Array.isArray(qData) ? qData : [])
         setPhotos(Array.isArray(pData) ? pData : [])
+        setBlogs(Array.isArray(bData) ? bData : [])
       } catch (err) {
         if (!ignore) {
           const isUnauthorized = err.status === 401 || (err.message || '').toLowerCase().includes('token')
@@ -927,6 +991,21 @@ export default function AdminDashboard() {
     }
   }
 
+  const deleteBlog = async (id) => {
+    try {
+      await apiFetch(`/api/blogs/${id}`, { method: 'DELETE', headers: getAuthHeaders() })
+      setBlogs(cur => cur.filter(blog => blog._id !== id))
+    } catch (err) {
+      const isUnauthorized = err.status === 401 || (err.message || '').toLowerCase().includes('token')
+      if (isUnauthorized) {
+        clearAuthToken()
+        navigate('/admin/login', { replace: true })
+        return
+      }
+      setError(err.message || 'Unable to delete blog')
+    }
+  }
+
   const switchPage = (page) => {
     if (page === activePage && !selectedQuery) return
     setSelectedQuery(null)
@@ -970,6 +1049,17 @@ export default function AdminDashboard() {
                 <path d="M21 15 16 10 5 21" />
               </svg>
               Photos
+            </button>
+            <button
+              className={`ad-nav-btn ${activePage === 'blogs' ? 'active' : ''}`}
+              type="button"
+              onClick={() => switchPage('blogs')}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 4.5h9a2.5 2.5 0 0 1 2.5 2.5v13l-4-2-4 2V7A2.5 2.5 0 0 0 6 4.5Z" />
+                <path d="M6 4.5A2.5 2.5 0 0 0 3.5 7v10.5h14" />
+              </svg>
+              Blogs
             </button>
           </nav>
 
@@ -1164,6 +1254,54 @@ export default function AdminDashboard() {
                           <button className="ad-photo-del-btn" type="button" onClick={() => deletePhoto(photo._id)}>Remove</button>
                         </div>
                       </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : null}
+
+            {!loading && activePage === 'blogs' ? (
+              <>
+                <div className="ad-page-header">
+                  <div>
+                    <h2>Blogs</h2>
+                    <p>Review community blog submissions and remove entries when needed</p>
+                  </div>
+                  <Link className="ad-header-action" to="/blog/submit">
+                    + Submit Blog
+                  </Link>
+                </div>
+
+                <div className="ad-photos-stats">
+                  <div className="ad-photos-stat">
+                    <div className="ad-photos-stat-value">{blogs.length}</div>
+                    <div className="ad-photos-stat-label">Published Blogs</div>
+                  </div>
+                </div>
+
+                {blogs.length === 0 ? (
+                  <p className="ad-empty">No blogs have been submitted yet.</p>
+                ) : (
+                  <div className="ad-blog-grid">
+                    {blogs.map(blog => (
+                      <article key={blog._id} className="ad-blog-card">
+                        <img className="ad-blog-thumb" src={blog.thumbnailUrl} alt={blog.thumbnailAlt || blog.title} />
+                        <div className="ad-blog-body">
+                          <div className="ad-blog-meta">
+                            <span>{formatShortDate(blog.createdAt)}</span>
+                            <span>Public Post</span>
+                          </div>
+                          <h3 className="ad-blog-title">{blog.title}</h3>
+                          <p className="ad-blog-author">By {blog.authorName}</p>
+                          <p className="ad-blog-excerpt">{blog.excerpt}</p>
+                          <div className="ad-blog-footer">
+                            <span className="ad-blog-email">{blog.authorEmail}</span>
+                            <button className="ad-act-btn ad-act-btn--danger" type="button" onClick={() => deleteBlog(blog._id)}>
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </article>
                     ))}
                   </div>
                 )}
