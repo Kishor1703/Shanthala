@@ -5,6 +5,35 @@ import { useScrollReveal } from '../hooks/useScrollReveal'
 import { siteAssets } from '../siteAssets'
 import './Blog.css'
 
+function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3.5" y="5" width="17" height="15" rx="2.5" />
+      <path d="M8 3.5v3" />
+      <path d="M16 3.5v3" />
+      <path d="M3.5 9.5h17" />
+    </svg>
+  )
+}
+
+function ReadTimeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5v5l3 2" />
+    </svg>
+  )
+}
+
+function AuthorIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="8" r="3.25" />
+      <path d="M5.5 19a6.5 6.5 0 0 1 13 0" />
+    </svg>
+  )
+}
+
 function formatDate(value) {
   if (!value) return ''
   try {
@@ -77,11 +106,20 @@ export default function BlogDetail() {
 
                 <div className="blog-detail-content">
                   <div className="blog-meta">
-                    <span>{formatDate(blog.createdAt)}</span>
-                    <span>{getReadTime(blog.content)}</span>
+                    <span>
+                      <span className="blog-meta-icon"><CalendarIcon /></span>
+                      {formatDate(blog.createdAt)}
+                    </span>
+                    <span>
+                      <span className="blog-meta-icon"><ReadTimeIcon /></span>
+                      {getReadTime(blog.content)}
+                    </span>
                   </div>
                   <h1 className="blog-detail-title">{blog.title}</h1>
-                  <p className="blog-detail-author">By {blog.authorName}</p>
+                  <p className="blog-detail-author">
+                    <span className="blog-detail-author-icon"><AuthorIcon /></span>
+                    <span>{blog.authorName}</span>
+                  </p>
                   <p className="blog-detail-excerpt">{blog.excerpt}</p>
 
                   <div className="blog-rich-text blog-detail-body">

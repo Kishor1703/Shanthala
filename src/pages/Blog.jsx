@@ -5,6 +5,26 @@ import { useScrollReveal } from '../hooks/useScrollReveal'
 import { siteAssets } from '../siteAssets'
 import './Blog.css'
 
+function BlogCardIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M7 4.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 19V6A1.5 1.5 0 0 1 7.5 4.5Z" />
+      <path d="M14 4.5V9h4" />
+      <path d="M9 12h6" />
+      <path d="M9 15h6" />
+    </svg>
+  )
+}
+
+function ArrowIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12h14" />
+      <path d="m13 6 6 6-6 6" />
+    </svg>
+  )
+}
+
 export default function Blog() {
   useScrollReveal()
   const [blogs, setBlogs] = useState([])
@@ -88,8 +108,18 @@ export default function Blog() {
                   <article className="blog-card">
                     <img className="blog-card-thumb" src={blog.thumbnailUrl} alt={blog.thumbnailAlt || blog.title} />
                     <div className="blog-card-body">
+                      <div className="blog-card-topline">
+                        <span className="blog-card-chip">
+                          <span className="blog-card-chip-icon"><BlogCardIcon /></span>
+                          Blog Story
+                        </span>
+                      </div>
                       <h3>{blog.title}</h3>
                       <p className="blog-card-excerpt">{blog.excerpt}</p>
+                      <div className="blog-card-footer">
+                        <span className="blog-card-readmore">Read article</span>
+                        <span className="blog-card-arrow"><ArrowIcon /></span>
+                      </div>
                     </div>
                   </article>
                 </Link>
