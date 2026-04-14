@@ -552,6 +552,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  font-family: var(--font-body);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -751,21 +752,25 @@
 
 .blog-detail-title {
   margin: 1rem 0 0.75rem;
-  font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
-  line-height: 1.05;
+  font-family: var(--font-body);
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
   color: var(--ink-charcoal);
 }
 
 .blog-detail-author {
   margin: 0 0 1rem;
+  font-family: var(--font-body);
   color: var(--ink-sienna);
   font-size: 0.95rem;
-  font-style: italic;
+  font-style: normal;
 }
 
 .blog-detail-excerpt {
   margin: 0 0 1.5rem;
+  font-family: var(--font-body);
   font-size: 1.05rem;
   line-height: 1.8;
   color: var(--ink-dust);
@@ -773,6 +778,21 @@
 
 .blog-detail-body {
   margin-top: 0;
+}
+
+.blog-detail-body p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--ink-sienna);
+}
+
+.blog-detail-body p:first-child::first-letter {
+  font-family: var(--font-body);
+  font-size: 2.4em;
+  font-weight: 600;
+  line-height: 0.9;
+  color: var(--sandalwood-gold);
 }
 
 /* ── Submit Page: Modern Form Layout ── */
