@@ -8,6 +8,7 @@ import Guru from './pages/Guru'
 import Classes from './pages/Classes'
 import Gallery from './pages/Gallery'
 import Blog from './pages/Blog'
+import BlogDetail from './pages/BlogDetail'
 import BlogSubmit from './pages/BlogSubmit'
 import Contact from './pages/Contact'
 import AdminLogin from './pages/AdminLogin'
@@ -34,6 +35,7 @@ function Layout() {
           <Route path="/classes" element={<Classes />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:blogId" element={<BlogDetail />} />
           <Route path="/blog/submit" element={<BlogSubmit />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin/login" element={<AdminLogin />} />
